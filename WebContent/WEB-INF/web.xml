@@ -1,0 +1,33 @@
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns="http://xmlns.jcp.org/xml/ns/javaee" 
+xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
+http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" 
+version="4.0">
+<description>MySQL Test App</description> 
+
+  <welcome-file-list>
+	<welcome-file>index.jsp</welcome-file>
+</welcome-file-list>
+
+  <servlet>
+  	<servlet-name>Diplom</servlet-name>
+  	<servlet-class>controller.MainController</servlet-class>
+  </servlet>
+   <servlet-mapping>
+  	<servlet-name>Diplom</servlet-name>
+  	<url-pattern>/</url-pattern>
+  	<url-pattern>/login</url-pattern>
+  	<url-pattern>/goods</url-pattern>
+  </servlet-mapping>  
+
+  <filter>
+    <filter-name>ReqFilter</filter-name>
+    <filter-class>controller.ReqFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>ReqFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+</web-app>
+
