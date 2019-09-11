@@ -18,8 +18,8 @@ public class DAOFactory {
 		return new UserTypeDAO();
 	}
 	
-	public static IGoodDAO<Good> getGoodDAO() {
-		return new GoodDAO();
+	public static IGoodsDAO<Goods> getGoodsDAO() {
+		return new GoodsDAO();
 	}
 	
 	public static ICheckDAO<Check> getCheckDAO() {

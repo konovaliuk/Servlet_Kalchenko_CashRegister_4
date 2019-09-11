@@ -4,28 +4,29 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import dao.DAOManager;
-import dao.IGoodDAO;
-import entity.Good;
+import dao.IGoodsDAO;
+import entity.Goods;
 
-public class GoodDAO implements IGoodDAO<Good> {
+public class GoodsDAO implements IGoodsDAO<Goods> {
 
-	public GoodDAO() {
+	public GoodsDAO() {
 	}
 	
 	@Override
-	public Long insert(Good good) {
-		if (good != null) {
+	public Long insert(Goods goods) {
+		if (goods != null) {
 			try (Connection connection = DAOManager.getConnection();
 				PreparedStatement statement = connection.prepareStatement("INSERT INTO goods "
-						+ "(code, name, quant, measure, comments) VALUES (?, ?, ?, ?, ?)")) {
-				statement.setInt(1, good.getCode());
-				statement.setString(2, good.getName());
-				statement.setDouble(3, good.getQuant());
-				statement.setString(4, good.getMeasure());
-				statement.setString(5, good.getComments());
+						+ "(code, name, quant, measure, comments) VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
+				statement.setInt(1, goods.getCode());
+				statement.setString(2, goods.getName());
+				statement.setDouble(3, goods.getQuant());
+				statement.setString(4, goods.getMeasure());
+				statement.setString(5, goods.getComments());
 				statement.executeUpdate();
 				ResultSet rs = statement.getGeneratedKeys();
 				rs.next();
@@ -38,44 +39,44 @@ public class GoodDAO implements IGoodDAO<Good> {
 	}
 	
 	@Override
-    public List<Good> findAll(String where) {
+    public List<Goods> findAll(String where) {
         return null;
     }
 	
 	@Override
-	public void update(Good good) {
+	public void update(Goods goods) {
 	}
 
 	@Override
-	public void delete(Good good) {
-		if (good != null) {
+	public void delete(Goods goods) {
+		if (goods != null) {
 			try(Connection connection = DAOManager.getConnection();
 				PreparedStatement statement = connection.prepareStatement("DELETE FROM goods WHERE id = ?")) {
-				statement.setLong(1, good.getId());
+				statement.setLong(1, goods.getId());
 				statement.executeUpdate();
-				System.out.println("Delete result: Good id " + good.getId());
+				System.out.println("Delete result: Goods id " + goods.getId());
 			} catch (SQLException e) {
-				System.out.println("GoodDAO.delete() error");
+				System.out.println("GoodsDAO.delete() error");
 			}
 		}
 	}
 
 	@Override
-	public Good findGood(int code) {
+	public Goods findGoods(int code) {
 		try (Connection connection = DAOManager.getConnection();
 			PreparedStatement statement = connection
 					.prepareStatement("SELECT * FROM goods WHERE code = ?")) {
 			statement.setInt(1, code);
 			ResultSet resultSet = statement.executeQuery();
 			if (resultSet.first()) {
-				Good good = new Good();
-				good.setId(resultSet.getLong("id"));
-				good.setCode(resultSet.getInt("code"));
-				good.setName(resultSet.getString("name"));
-				good.setQuant(resultSet.getInt("quant"));
-				good.setMeasure(resultSet.getString("measure"));
-				good.setComments(resultSet.getString("comments"));
-				return good;
+				Goods goods = new Goods();
+				goods.setId(resultSet.getLong("id"));
+				goods.setCode(resultSet.getInt("code"));
+				goods.setName(resultSet.getString("name"));
+				goods.setQuant(resultSet.getInt("quant"));
+				goods.setMeasure(resultSet.getString("measure"));
+				goods.setComments(resultSet.getString("comments"));
+				return goods;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -84,7 +85,7 @@ public class GoodDAO implements IGoodDAO<Good> {
 	}
 	
 	@Override
-	public Good findGood(String name) {
+	public Goods findGoods(String name) {
 		if (name != null) {
 			try (Connection connection = DAOManager.getConnection();
 				PreparedStatement statement = connection
@@ -92,14 +93,14 @@ public class GoodDAO implements IGoodDAO<Good> {
 				statement.setString(1, name.toLowerCase());
 				ResultSet resultSet = statement.executeQuery();
 				if (resultSet.first()) {
-					Good good = new Good();
-					good.setId(resultSet.getLong("id"));
-					good.setCode(resultSet.getInt("code"));
-					good.setName(resultSet.getString("name"));
-					good.setQuant(resultSet.getInt("quant"));
-					good.setMeasure(resultSet.getString("measure"));
-					good.setComments(resultSet.getString("comments"));
-					return good;
+					Goods goods = new Goods();
+					goods.setId(resultSet.getLong("id"));
+					goods.setCode(resultSet.getInt("code"));
+					goods.setName(resultSet.getString("name"));
+					goods.setQuant(resultSet.getInt("quant"));
+					goods.setMeasure(resultSet.getString("measure"));
+					goods.setComments(resultSet.getString("comments"));
+					return goods;
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();

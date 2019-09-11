@@ -3,21 +3,28 @@ xmlns="http://xmlns.jcp.org/xml/ns/javaee"
 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
 http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" 
 version="4.0">
-<description>MySQL Test App</description> 
+<description>Web project</description> 
 
   <welcome-file-list>
 	<welcome-file>index.jsp</welcome-file>
 </welcome-file-list>
 
   <servlet>
-  	<servlet-name>Diplom</servlet-name>
+  	<servlet-name>CashRegister</servlet-name>
   	<servlet-class>controller.MainController</servlet-class>
+  	<init-param>	
+		<param-name>logfile</param-name>
+		<param-value>WEB-INF/log4j.properties</param-value>
+	</init-param>
   </servlet>
    <servlet-mapping>
-  	<servlet-name>Diplom</servlet-name>
+  	<servlet-name>CashRegister</servlet-name>
   	<url-pattern>/</url-pattern>
   	<url-pattern>/login</url-pattern>
+  	<url-pattern>/check</url-pattern>
   	<url-pattern>/goods</url-pattern>
+  	<url-pattern>/cancel</url-pattern>
+  	<url-pattern>/report</url-pattern>
   </servlet-mapping>  
 
   <filter>

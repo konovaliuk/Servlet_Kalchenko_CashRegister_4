@@ -74,4 +74,17 @@ nav a {
   padding: 0 25px;
   font-family: 'Kurale', serif;
 }
+.reptitle{
+	text-align:center;
+	font-weight:800; 
+}
+
+.center {
+    width: 300px; /* Ширина элемента в пикселах */
+    padding: 10px; /* Поля вокруг текста */
+    margin: auto; /* Выравниваем по центру */
+}
+.alignRight{
+    float:right;
+}
  

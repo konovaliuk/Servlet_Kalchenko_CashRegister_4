@@ -1,16 +1,13 @@
-package controller;
+package service;
 
-import java.io.ByteArrayOutputStream;
 import java.net.URI;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import javax.swing.text.html.HTML;
 
 import dao.DAOManager;
 import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.export.JRXmlExporter;
 
 /**
  * @author SergeyK

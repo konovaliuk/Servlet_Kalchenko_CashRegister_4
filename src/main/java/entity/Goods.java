@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * @author SergeyK
  */
-public class Good implements Serializable {
+public class Goods implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -16,7 +16,7 @@ public class Good implements Serializable {
 	private double quant;
 	private String comments;
 
-	public Good() {
+	public Goods() {
 	}
 
 	public Long getId() {
@@ -70,6 +70,6 @@ public class Good implements Serializable {
 	
     @Override
     public String toString() {
-        return "good[ id=" + id + ", code=" + code + ", name=" + name + ", measure=" + measure + ", comments=" + comments + " ]";
+        return "goods[ id=" + id + ", code=" + code + ", name=" + name + ", measure=" + measure + ", comments=" + comments + " ]";
     }
 }

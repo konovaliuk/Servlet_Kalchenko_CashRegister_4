@@ -29,7 +29,7 @@
 		      <fmt:message key="check.code"/> ${code} <fmt:message key="goods.exists"/>!
 		   </c:if>
 		</h4>
-		<FORM action="/Web/goods" method="POST">
+		<FORM method="POST">
 			<table>
 				<tr>
 					<td style="text-align: left"><fmt:message key="check.goodname"/>:</td>

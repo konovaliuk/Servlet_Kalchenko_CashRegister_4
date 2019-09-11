@@ -23,13 +23,13 @@
 		<h2><fmt:message key="index.welcome"/></h2>
 		<h3><font color="red">
 		   <c:if test="${not empty userNotExists and userNotExists eq 'true'}">
-		      <fmt:message key="index.nouser"/>
+		      <fmt:message key="index.nouser"/> <!-- учетная запись отсутствует -->
 		   </c:if>
 		   </font>
 		</h3>
 		<p>a2@gmail.com<p> <!-- для дебага -->
 		<p>a3@gmail.com<p> <!-- для дебага -->
-		<FORM action="/Web/login" method="POST">
+		<FORM method="POST">
 			<table style="margin: auto">
 				<tr>
 					<td style="text-align: left">E-mail:</td>
@@ -44,7 +44,7 @@
 				</tr>
 			</table>
 		</FORM>
-		<div align="center"><a href="/Web/registration"><fmt:message key="registration"/></a></div>
+		<div align="center"><a href="registration"><fmt:message key="registration"/></a></div>
 		
 	</body>
 </html>
