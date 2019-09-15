@@ -1,11 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.*;
-import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
@@ -17,9 +12,11 @@ import command.Command;
 import command.CommandFactory;
 import command.CommandFactory.Commands;
 import dao.*;
-import entity.*;
+import service.*;
 
 public class MainController extends HttpServlet {
+
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	public void init() throws ServletException {
@@ -36,11 +33,13 @@ public class MainController extends HttpServlet {
 
 		//pref – указывает на путь к файлу конфигурации
 		PropertyConfigurator.configure(pref+logfilename);
-		Logger loger = Logger.getRootLogger();
+		Logger logger = Logger.getRootLogger();
 
-		getServletContext().setAttribute(new String("log4"), loger);
-		getServletContext().setAttribute("logfilename", logfilename);
-		loger.info("Load-onstart-up Servlet");
+		getServletContext().setAttribute(new String("log4"), logger);
+		CheckService.setLogger(logger);
+		GoodsService.setLogger(logger);
+		//getServletContext().setAttribute("logfilename", logfilename);
+		logger.info("Load-onstart-up Servlet");
 	}
 	
 	@Override
@@ -59,6 +58,8 @@ public class MainController extends HttpServlet {
 		} else if (userPath.equals("/registration")) {
 			url += "registration.jsp";
 		} else if (userPath.equals("/goods")) {
+			Command command = CommandFactory.getInstance().getCommand(Commands.GOODS);
+			command.execute(req, resp);		//для pagination	
 			url += "goods.jsp";
 		} else if (userPath.equals("/check")) {
 			url += "check.jsp";
@@ -79,7 +80,7 @@ public class MainController extends HttpServlet {
 		String userPath = req.getServletPath();
 		CommandFactory commands = CommandFactory.getInstance();
 		
-		if (userPath.equals("/") || userPath.equals("/login")) {
+		if (userPath.equals("/") || userPath.equals("/login") || userPath.equals("/logout")) {
 			String buttonLogin = req.getParameter("btnLogin");			
 			String email = req.getParameter("email");			
 			if (buttonLogin != null && email != null) {
@@ -95,16 +96,21 @@ public class MainController extends HttpServlet {
 				resp.sendRedirect(path);
 			}
 		} else if (userPath.equals("/goods")) {
-			String buttonSave = req.getParameter("btnSaveGood");
-			if (buttonSave != null) {
-				Command command = commands.getCommand(Commands.GOODS);
-				command.execute(req, resp);
+			Command command = commands.getCommand(Commands.GOODS);
+			String path = command.execute(req, resp);
+			resp.sendRedirect(path);//ранее заполненные данные POST не передаются повторно, когда пользователь неосознанно нажимает F5			
+		} else if (userPath.equals("/check")) {
+			Command command;
+			String path = null;
+			if (req.getParameter("btnAddCheckspec") != null) {
+				command = commands.getCommand(Commands.CHECKSPEC);
+				path = command.execute(req, resp);
+			} else if (req.getParameter("btnCreateCheck") != null){
+				command = commands.getCommand(Commands.CHECK);
+				path = command.execute(req, resp);
 			}
-			req.getRequestDispatcher("/WEB-INF/view/goods.jsp").forward(req, resp);
-		} else if (userPath.equals("/check")) {			
-			Command command = commands.getCommand(Commands.CHECK);
-			command.execute(req, resp);			
-			req.getRequestDispatcher("/WEB-INF/view/check.jsp").forward(req, resp);
+			resp.sendRedirect(path);
+			//req.getRequestDispatcher("/WEB-INF/view/check.jsp").forward(req, resp);
 		} else if (userPath.equals("/cancel")) {
 			Command command = commands.getCommand(Commands.CANCEL);
 			String path = command.execute(req, resp);

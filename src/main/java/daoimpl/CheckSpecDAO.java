@@ -12,7 +12,16 @@ public class CheckSpecDAO implements ICheckSpecDAO<Checkspec> {
 	/**connection используется для транзакций в разных DAO*/
 	private Connection connection;
 	
-	public CheckSpecDAO() {
+	private static CheckSpecDAO instance;
+	
+	private CheckSpecDAO() {
+	}
+	
+	public static ICheckSpecDAO<Checkspec> getInstance() {
+		if (instance == null) {
+			instance = new CheckSpecDAO();
+		}
+		return instance;		
 	}
 	
 	/**

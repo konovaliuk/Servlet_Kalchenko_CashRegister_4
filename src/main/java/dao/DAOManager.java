@@ -13,7 +13,6 @@ public final class DAOManager {
 
 	private static DAOManager dao;
 	private static DataSource ds;
-	//private Connection con;
 
 	private DAOManager() throws Exception {
 		try {
@@ -40,20 +39,10 @@ public final class DAOManager {
 	
 	public static Connection getConnection() {
 		try {
-			//getInstance();
 			return ds.getConnection();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
-   /*public void closeConnection() throws SQLException {
-        try
-        {
-            if(this.con!=null && !this.con.isClosed())
-                this.con.close();
-        }
-        catch(SQLException e) { throw e; }
-    }*/
 }

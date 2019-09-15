@@ -18,7 +18,7 @@
  </head> 
 <body>
 <jsp:include page="header.jsp" flush="true" />
-<h1>Система <fmt:message key="title"/>. <fmt:message key="goods.title"/></h1>
+<h1><fmt:message key="title"/>. <fmt:message key="goods.title"/></h1>
 
 	<c:if test="${sessionScope.user.idUserType == '4'}">
 		<h4>
@@ -57,6 +57,48 @@
 				</tr>
 			</table>
 		</FORM>
+		
+		<table class="table-border">
+			<tr>
+				<th><fmt:message key="check.num"/></th>
+				<th><fmt:message key="check.goodname"/></th>
+				<th><fmt:message key="check.code"/></th>
+				<th><fmt:message key="check.quant"/></th>
+				<th><fmt:message key="goods.measure"/></th>
+				<th><fmt:message key="goods.comments"/></th>
+			</tr>			
+			<c:forEach items="${requestScope.viewGoods}" var ="product" varStatus="counter">
+				<c:set var="count" value="${(currentPage - 1) * 10 + counter.count}" />
+				<tr>
+					<td>${count}</td>
+					<td>${product.name}</td>
+					<td>${product.code}</td>
+					<td>${product.quant}</td>
+					<td>${product.measure}</td>
+					<td>${product.comments}</td>
+				</tr>	
+			</c:forEach>
+		</table>
+	    <table>
+	        <tr>
+	        	<c:if test="${currentPage != 1}">
+        			<td><a href="?page=${currentPage - 1}">Previous</a></td>
+    			</c:if>
+	            <c:forEach begin="1" end="${maxPages}" var="i">
+	                <c:choose>
+	                    <c:when test="${currentPage == i}">
+	                        <td>${i}</td>
+	                    </c:when>
+	                    <c:otherwise>
+	                        <td><a href="?page=${i}">${i}</a></td>
+	                    </c:otherwise>
+	                </c:choose>
+	            </c:forEach>
+	           	<c:if test="${currentPage < maxPages}">
+	        		<td><a href="?page=${currentPage + 1}">Next</a></td>
+    			</c:if>
+	        </tr>
+	    </table>
 	</c:if>
 	</body>
 </html>

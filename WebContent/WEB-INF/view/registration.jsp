@@ -18,7 +18,7 @@
  </head>
 <body>
 <jsp:include page="header.jsp" flush="true" />
-<h1>Система <fmt:message key="title"/>. <fmt:message key="registration.title"/>!</h1>
+<h1><fmt:message key="title"/>. <fmt:message key="registration.title"/>!</h1>
 
 		<FORM method="POST">
 			<table style="margin: auto">
@@ -31,7 +31,7 @@
 					<td><input name="email" type="email" size="35" placeholder="E-mail" required /></td>
 				</tr>
 				<tr>
-					<td style="text-align: left">Пароль:</td>
+					<td style="text-align: left"><fmt:message key="registration.password"/>:</td>
 					<td><input id="id_password" name="password" type="password" placeholder="Пароль" size="35" maxlength="35" required oninput='check_pass();'/></td>
 				</tr>
 				<tr>

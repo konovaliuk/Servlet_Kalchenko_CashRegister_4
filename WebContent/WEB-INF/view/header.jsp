@@ -27,6 +27,7 @@
 	      <ul class="submenu">
 	        <li><a href="?lang=ru" >Русский</a></li>
 	        <li><a href="?lang=ua" >Українська</a></li>
+	        <li><a href="?lang=en" >English</a></li>
 	      </ul>
 	    </li>
 	</ul>

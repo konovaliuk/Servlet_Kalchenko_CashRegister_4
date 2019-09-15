@@ -19,7 +19,7 @@
 <body>
 
 <jsp:include page="header.jsp" flush="true" />
-<h1>Система <fmt:message key="title"/></h1>
+<h1><fmt:message key="title"/></h1>
 		<h2><fmt:message key="index.welcome"/></h2>
 		<h3><font color="red">
 		   <c:if test="${not empty userNotExists and userNotExists eq 'true'}">
@@ -27,24 +27,25 @@
 		   </c:if>
 		   </font>
 		</h3>
-		<p>a2@gmail.com<p> <!-- для дебага -->
-		<p>a3@gmail.com<p> <!-- для дебага -->
-		<FORM method="POST">
-			<table style="margin: auto">
-				<tr>
-					<td style="text-align: left">E-mail:</td>
-					<td><input name="email" type="email" size="35" placeholder="E-mail" autocomplete="on" autofocus required /></td>
-				</tr>
-				<tr>
-					<td style="text-align: left">Пароль:</td>
-					<td><input name="password" type="password" placeholder="Пароль" size="35" maxlength="35" required /></td>
-				</tr>
-				<tr>
-					<td><input type="submit" class="button" name="btnLogin" value=<fmt:message key="menu.enter"/> /></td>					
-				</tr>
-			</table>
-		</FORM>
-		<div align="center"><a href="registration"><fmt:message key="registration"/></a></div>
-		
+		<c:if test="${empty sessionScope.user}">
+			<p>a1@gmail.com<p> <!-- для дебага -->
+			<p>a3@gmail.com<p> <!-- для дебага -->
+			<FORM method="POST">
+				<table style="margin: auto">
+					<tr>
+						<td style="text-align: left">E-mail:</td>
+						<td><input name="email" type="email" size="35" placeholder="E-mail" autocomplete="on" autofocus required /></td>
+					</tr>
+					<tr>
+						<td style="text-align: left"><fmt:message key="registration.password"/>:</td>
+						<td><input name="password" type="password" placeholder="Пароль" size="35" maxlength="35" required /></td>
+					</tr>
+					<tr>
+						<td><input type="submit" class="button" name="btnLogin" value=<fmt:message key="menu.enter"/> /></td>					
+					</tr>
+				</table>
+			</FORM>
+			<div align="center"><a href="registration"><fmt:message key="registration"/></a></div>
+		</c:if>
 	</body>
 </html>

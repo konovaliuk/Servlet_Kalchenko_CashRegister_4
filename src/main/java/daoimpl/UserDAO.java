@@ -10,7 +10,16 @@ import entity.User;
 
 public class UserDAO implements IUserDAO<User> {
 
-	public UserDAO() {
+	private static UserDAO instance;
+	
+	private UserDAO() {
+	}
+	
+	public static IUserDAO<User> getInstance() {
+		if (instance == null) {
+			instance = new UserDAO();
+		}
+		return instance;		
 	}
 	
 	@Override

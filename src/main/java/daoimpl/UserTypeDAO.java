@@ -9,7 +9,16 @@ import entity.UserType;
 
 public class UserTypeDAO implements IUserTypeDAO<UserType> {
 	
-	public UserTypeDAO() {
+	private static UserTypeDAO instance;
+	
+	private UserTypeDAO() {
+	}
+	
+	public static IUserTypeDAO<UserType> getInstance() {
+		if (instance == null) {
+			instance = new UserTypeDAO();
+		}
+		return instance;		
 	}
 	
 	@Override
@@ -44,9 +53,9 @@ public class UserTypeDAO implements IUserTypeDAO<UserType> {
 		if (usertype != null) {			
 			try(Connection connection = DAOManager.getConnection();
 				PreparedStatement statement = connection.prepareStatement("DELETE FROM user_type WHERE id = ?")) {
-				statement.setLong(1, usertype.getIdUserType());
+				statement.setLong(1, usertype.getId());
 				statement.executeUpdate();
-				System.out.println("Delete result: User id " + usertype.getIdUserType());
+				System.out.println("Delete result: User id " + usertype.getId());
 			} catch (SQLException e) {
 				System.out.println("UserDAO.delete() error");
 			}
@@ -56,12 +65,11 @@ public class UserTypeDAO implements IUserTypeDAO<UserType> {
 	@Override
 	public Long findUserType(String type) {		
 		try (Connection connection = DAOManager.getConnection();
-			PreparedStatement statement = connection.prepareStatement("SELECT id_user_type FROM user_type "
-					+ "WHERE type = ?")) {
+			PreparedStatement statement = connection.prepareStatement("SELECT id FROM user_type WHERE type = ?")) {
 			statement.setString(1, type);
 			ResultSet result = statement.executeQuery();
 			if(result.next()) {
-				return result.getLong("id_user_type");	
+				return result.getLong("id");	
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

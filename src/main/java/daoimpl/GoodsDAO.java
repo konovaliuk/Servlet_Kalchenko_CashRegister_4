@@ -1,10 +1,7 @@
 package daoimpl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import dao.DAOManager;
@@ -13,7 +10,16 @@ import entity.Goods;
 
 public class GoodsDAO implements IGoodsDAO<Goods> {
 
-	public GoodsDAO() {
+	private static GoodsDAO instance;
+	
+	private GoodsDAO() {
+	}
+	
+	public static IGoodsDAO<Goods> getInstance() {
+		if (instance == null) {
+			instance = new GoodsDAO();
+		}
+		return instance;		
 	}
 	
 	@Override
@@ -38,11 +44,54 @@ public class GoodsDAO implements IGoodsDAO<Goods> {
 		return null;
 	}
 	
-	@Override
-    public List<Goods> findAll(String where) {
-        return null;
+	public List<Goods> findAll(Integer page, Integer recordsPerPage) {
+		return findAll(null, page, recordsPerPage);
+	}
+	
+	public List<Goods> findAll(String where) {
+		return findAll(where, null, null);
+	}	
+	
+    private List<Goods> findAll(String where, Integer page, Integer recordsPerPage) {
+    	List<Goods> goods = new ArrayList<>();
+		try (Connection connection = DAOManager.getConnection();
+			PreparedStatement statement = connection
+				.prepareStatement("SELECT * FROM goods" + (where != null ? " WHERE " + where : "") 
+					+ " ORDER BY code"
+					+ (recordsPerPage != null ? " LIMIT " + recordsPerPage : "")
+					+ (page != null && page > 1 ? " OFFSET " + (page-1) * recordsPerPage : ""))) {
+			ResultSet resultSet = statement.executeQuery();
+			while (resultSet.next()) {
+				Goods product = new Goods();
+				product.setId(resultSet.getLong("id"));
+				product.setCode(resultSet.getInt("code"));
+				product.setName(resultSet.getString("name"));
+				product.setQuant(resultSet.getDouble("quant"));
+				product.setMeasure(resultSet.getString("measure"));
+				product.setComments(resultSet.getString("comments"));
+				goods.add(product);				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return goods;
     }
 	
+    @Override
+    public long count() {
+    	long count = 0;
+		try (Connection connection = DAOManager.getConnection();
+			Statement statement = connection.createStatement()) {			
+			ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) AS count FROM cashreg.goods");
+			if (resultSet.first()) {
+				count = resultSet.getInt("count");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return count;
+    }
+    
 	@Override
 	public void update(Goods goods) {
 	}

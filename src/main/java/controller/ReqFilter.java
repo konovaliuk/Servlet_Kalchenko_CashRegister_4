@@ -20,13 +20,13 @@ public class ReqFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		request.setCharacterEncoding("UTF-8");
-		HttpSession session = ((HttpServletRequest)request).getSession(false);
-		if (session == null || session.getAttribute("user") == null) {
-			//request.getServletContext().getRequestDispatcher("/").forward(request, response);
-			//request.getRequestDispatcher("/WEB-INF/view/index.jsp").forward(request, response);
-			//request.getRequestDispatcher("/WEB-INF/view/index.jsp").forward(request, response);
-			//((HttpServletResponse)response).sendRedirect("/");
-		}
+		HttpSession session = ((HttpServletRequest)request).getSession();
+		String path = ((HttpServletRequest)request).getServletPath();
+ 		if ((session == null || session.getAttribute("user") == null) 
+				&& !path.startsWith("/log")) {
+			((HttpServletResponse)response).sendRedirect("login");
+			return;
+		}		
 		chain.doFilter(request, response);
 	}
 }

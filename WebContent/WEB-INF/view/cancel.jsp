@@ -18,7 +18,7 @@
  </head> 
 <body>
 <jsp:include page="header.jsp" flush="true" />
-<h1>Система <fmt:message key="title"/>. <fmt:message key="cancel.title"/>.</h1>
+<h1><fmt:message key="title"/>. <fmt:message key="cancel.title"/>.</h1>
 	<c:if test="${sessionScope.user.idUserType == '2'}">
 		<h4>
 

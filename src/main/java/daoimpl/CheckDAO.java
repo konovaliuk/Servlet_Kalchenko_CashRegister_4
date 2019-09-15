@@ -13,7 +13,16 @@ public class CheckDAO implements ICheckDAO<Check> {
 	/**connection используется для транзакций в разных DAO*/
 	private Connection connection;
 	
-	public CheckDAO() {
+	private static CheckDAO instance;
+	
+	private CheckDAO() {
+	}
+	
+	public static ICheckDAO<Check> getInstance() {
+		if (instance == null) {
+			instance = new CheckDAO();
+		}
+		return instance;		
 	}
 	
 	/**

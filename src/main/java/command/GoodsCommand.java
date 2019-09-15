@@ -1,11 +1,14 @@
 package command;
 
+import java.util.List;
+
 import javax.servlet.http.*;
 
 import org.apache.log4j.Logger;
+import org.omg.CORBA.Object;
 
-import dao.*;
-import entity.*;
+import entity.Goods;
+import service.GoodsService;
 
 /**
  * @author SergeyK
@@ -13,27 +16,33 @@ import entity.*;
 public class GoodsCommand implements Command {
 
 	@Override
-	public String execute(HttpServletRequest req, HttpServletResponse resp) {	
-		Logger log = (Logger)req.getServletContext().getAttribute("log4");
-		int code = Integer.valueOf(req.getParameter("code"));
-		String name = req.getParameter("name");
-		Goods goods = new Goods();
-		goods.setCode(Integer.valueOf(req.getParameter("code")));
-		goods.setName(name);
-		goods.setQuant(Double.valueOf(req.getParameter("quant")));
-		goods.setMeasure(req.getParameter("measure"));
-		goods.setComments(req.getParameter("comments"));
-		IGoodsDAO<Goods> goodsDAO = DAOFactory.getGoodsDAO();
-		Goods existsGood = goodsDAO.findGoods(code);
-		if (existsGood == null) {
-			goodsDAO.insert(goods);
-			req.setAttribute("addedGood", name);
-			log.info("Товар добавлен");
-		} else {
-			req.setAttribute("addedGood", null);
-			req.setAttribute("code", code);
-			log.info("Товар с кодом " + code + " уже существует");
-		}		
-		return "goods";		
+	public String execute(HttpServletRequest req, HttpServletResponse resp) {
+		
+        Integer page =1;
+        if (req.getParameter("page") != null) {
+            page = Integer.parseInt(req.getParameter("page"));
+        }
+        String url = "goods" + (page > 1 ? "?page=" + page : "");		
+		String buttonSave = req.getParameter("btnSaveGood");
+		if (buttonSave != null) {
+			int code = Integer.valueOf(req.getParameter("code"));
+			String name = req.getParameter("name");
+			Long goodsId = GoodsService.addGoods(code, name, Double.valueOf(req.getParameter("quant")), 
+					req.getParameter("measure"), req.getParameter("comments"));
+			if (goodsId != null) {
+				req.setAttribute("addedGood", name);				
+			} else {
+				req.setAttribute("addedGood", null);
+				req.setAttribute("code", code);				
+			}
+		} else {			        
+	        int recordsPerPage = 10;
+			List<Goods> goods = GoodsService.view(page, recordsPerPage);
+			req.setAttribute("viewGoods", goods);
+			req.setAttribute("currentPage", page);
+			long countGoods = GoodsService.count();
+			req.setAttribute("maxPages", countGoods / recordsPerPage + Math.min(countGoods % recordsPerPage, 1));
+		}
+		return url;
 	}
 }

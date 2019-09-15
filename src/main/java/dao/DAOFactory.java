@@ -11,23 +11,23 @@ public class DAOFactory {
 	}
 	
 	public static IUserDAO<User> getUserDAO() {
-		return new UserDAO();
+		return UserDAO.getInstance();
 	}
 	
 	public static IUserTypeDAO<UserType> getUserTypeDAO() {
-		return new UserTypeDAO();
+		return UserTypeDAO.getInstance();
 	}
 	
 	public static IGoodsDAO<Goods> getGoodsDAO() {
-		return new GoodsDAO();
+		return GoodsDAO.getInstance();
 	}
 	
 	public static ICheckDAO<Check> getCheckDAO() {
-		return new CheckDAO();
+		return CheckDAO.getInstance();
 	}
 
 	public static ICheckSpecDAO<Checkspec> getCheckSpecDAO() {
-		return new CheckSpecDAO();
+		return CheckSpecDAO.getInstance();
 	}
 
 	/*

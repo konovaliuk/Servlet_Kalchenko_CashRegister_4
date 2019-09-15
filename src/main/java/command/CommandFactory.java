@@ -27,6 +27,8 @@ public final class CommandFactory {
 				return new GoodsCommand();
 			case CHECK:
 				return new CheckCommand();
+			case CHECKSPEC:
+				return new CheckSpecCommand();
 			case CANCEL:
 				return new CancelCommand();
 			default:
@@ -35,6 +37,6 @@ public final class CommandFactory {
 	}
 	
 	public enum Commands {
-		LOGIN, REGISTRATION, GOODS, CHECK, CANCEL
+		LOGIN, REGISTRATION, GOODS, CHECK, CANCEL, CHECKSPEC
 	}
 }

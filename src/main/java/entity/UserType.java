@@ -10,7 +10,7 @@ public class UserType implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long idUserType;
+    private Long id;
 
     private String type;
     
@@ -19,16 +19,16 @@ public class UserType implements Serializable {
     public UserType() {
     }
 
-    public UserType(Long idUserType) {
-        this.idUserType = idUserType;
+    public UserType(Long id) {
+        this.id = id;
     }
 
-    public Long getIdUserType() {
-        return idUserType;
+    public Long getId() {
+        return id;
     }
 
-    public void setIdUserType(Long idUserType) {
-        this.idUserType = idUserType;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getType() {
@@ -53,7 +53,7 @@ public class UserType implements Serializable {
             return false;
         }
         UserType other = (UserType) object;
-        if ((this.idUserType == null && other.idUserType != null) || (this.idUserType != null && !this.idUserType.equals(other.idUserType))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -63,13 +63,13 @@ public class UserType implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idUserType != null ? idUserType.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
     
     @Override
     public String toString() {
-        return "UserType[ idUserType=" + idUserType + " ]";
+        return "UserType[ idUserType=" + id + " ]";
     }
     
 }
