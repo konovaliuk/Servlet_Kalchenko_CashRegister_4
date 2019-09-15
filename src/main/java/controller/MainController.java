@@ -110,12 +110,10 @@ public class MainController extends HttpServlet {
 				path = command.execute(req, resp);
 			}
 			resp.sendRedirect(path);
-			//req.getRequestDispatcher("/WEB-INF/view/check.jsp").forward(req, resp);
 		} else if (userPath.equals("/cancel")) {
 			Command command = commands.getCommand(Commands.CANCEL);
 			String path = command.execute(req, resp);
 			resp.sendRedirect(path);
-			//req.getRequestDispatcher("/WEB-INF/view/cancel.jsp").forward(req, resp);
 		}
 	}
 }

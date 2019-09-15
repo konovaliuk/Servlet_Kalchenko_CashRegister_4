@@ -8,6 +8,7 @@ import entity.User;
 import service.UserService;
 
 /**
+ * Класс Command для авторизации пользователя
  * @author SergeyK
  */
 public class LoginCommand implements Command {
@@ -16,7 +17,7 @@ public class LoginCommand implements Command {
 	public String execute(HttpServletRequest req, HttpServletResponse resp) {
 		
 		HttpSession session = req.getSession();
-		User dbUser = UserService.login(req.getParameter("email"),  req.getParameter("password"));
+		User dbUser = UserService.findUser(req.getParameter("email"),  req.getParameter("password"));
 		if (dbUser != null) {
 			session.setAttribute("userNotExists", null);
 			session.setAttribute("user", dbUser);

@@ -82,18 +82,20 @@ public class UserDAO implements IUserDAO<User> {
 	}
 
 	@Override
-	public User findUser(User user) {
+	public User findUser(String login, String password) {
 		try (Connection connection = DAOManager.getConnection();
 			PreparedStatement statement = connection
 					.prepareStatement("SELECT * FROM user WHERE login = ? AND password = ?")) {
-			statement.setString(1, user.getLogin());
-			statement.setString(2, user.getPassword());
+			statement.setString(1, login);
+			statement.setString(2, password);
 
 			ResultSet resultSet = statement.executeQuery();
+			User user = new User();
 			if (resultSet.first()) {
 				user.setId(resultSet.getLong("id"));
+				user.setLogin(login);
 				user.setIdUserType(resultSet.getLong("id_user_type"));
-				//user.setPassword(resultSet.getString("password"));
+				//user.setPassword(password);
 				user.setName(resultSet.getString("name"));
 				return user;
 			}

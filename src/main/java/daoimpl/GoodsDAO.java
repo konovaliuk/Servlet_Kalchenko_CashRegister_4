@@ -50,7 +50,7 @@ public class GoodsDAO implements IGoodsDAO<Goods> {
 	
 	public List<Goods> findAll(String where) {
 		return findAll(where, null, null);
-	}	
+	}
 	
     private List<Goods> findAll(String where, Integer page, Integer recordsPerPage) {
     	List<Goods> goods = new ArrayList<>();

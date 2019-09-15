@@ -5,13 +5,18 @@ import java.sql.Connection;
 public interface ICheckDAO<Check> extends IDAO<Check> {
 
 	/**
-	 * @param id
-	 * @return
+	 * Найти запись по Id
+	 * @param id записи
+	 * @return объект по найденной записи
 	 */
 	Check findCheck(Long id);
+
 	
 	/**
-	 * @param connection
+	 * Добавить запись в таблицу чеки
+	 * @param connection для транзакций
+	 * @param check добавляемая запись
+	 * @return Id добавленной записи
 	 */
-	void setConnection(Connection connection);
+	Long insert(Connection connection, Check check);
 }

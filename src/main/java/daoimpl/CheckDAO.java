@@ -9,9 +9,6 @@ import dao.ICheckDAO;
 import entity.Check;
 
 public class CheckDAO implements ICheckDAO<Check> {
-
-	/**connection используется для транзакций в разных DAO*/
-	private Connection connection;
 	
 	private static CheckDAO instance;
 	
@@ -24,15 +21,16 @@ public class CheckDAO implements ICheckDAO<Check> {
 		}
 		return instance;		
 	}
-	
-	/**
-	 * Добавить запись в таблицу чеки
-	 * @param check добавляемая запись
-	 */
+
 	@Override
 	public Long insert(Check check) {
+		return insert(null, check);
+	}
+	
+	@Override
+	public Long insert(Connection connection, Check check) {
 		if (check != null) {
-			Connection conn = (this.connection == null ? DAOManager.getConnection() : this.connection);
+			Connection conn = (connection == null ? DAOManager.getConnection() : connection);
 			try (PreparedStatement statement = conn.prepareStatement("INSERT INTO cashreg.check (creator, total, discount, canceled) "
 					+ "VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
 				statement.setLong(1, check.getCreator());
@@ -46,7 +44,7 @@ public class CheckDAO implements ICheckDAO<Check> {
 			} catch (SQLException e) {
 				e.printStackTrace();				
 			} finally {
-				if (conn != null && this.connection == null) {
+				if (conn != null && connection == null) {
 			        try {
 			            conn.close();
 			        } catch (SQLException e) { e.printStackTrace();}
@@ -56,10 +54,6 @@ public class CheckDAO implements ICheckDAO<Check> {
 		return null;
 	}
 
-	/**
-	 * Найти все записи из таблицы чеки
-	 * @param where строка запроса where для поиска
-	 */
 	@Override
     public List<Check> findAll(String where) {
     	List<Check> checks = new ArrayList<>();
@@ -83,10 +77,6 @@ public class CheckDAO implements ICheckDAO<Check> {
 		return checks;
     }
 	
-	/**
-	 * Обновить запись в таблице чеки
-	 * @param check обновляемая запись
-	 */
 	@Override
 	public void update(Check check) {
 		if (check != null) {
@@ -106,10 +96,6 @@ public class CheckDAO implements ICheckDAO<Check> {
 		}
 	}
 
-	/**
-	 * Удалить запись в таблице чеки
-	 * @param check удаляемая запись
-	 */
 	@Override
 	public void delete(Check check) {
 		if (check != null) {
@@ -124,10 +110,6 @@ public class CheckDAO implements ICheckDAO<Check> {
 		}
 	}
 
-	/**
-	 * Найти запись из таблицы чеки по id
-	 * @param id номер записи
-	 */
 	@Override
 	public Check findCheck(Long id) {
 		try (Connection connection = DAOManager.getConnection();
@@ -149,21 +131,5 @@ public class CheckDAO implements ICheckDAO<Check> {
 			e.printStackTrace();			
 		}
 		return null;
-	}
-	
-	/**
-	 * Получить connection для транзакций
-	 * @return connection возвращаемый connection
-	 */
-	public Connection getConnection() {
-		return connection;
-	}
-
-	/**
-	 * Установить connection для транзакций
-	 * @param connection устанавливаемый connection
-	 */
-	public void setConnection(Connection connection) {
-		this.connection = connection;
 	}
 }

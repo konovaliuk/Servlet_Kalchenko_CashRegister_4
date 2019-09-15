@@ -7,19 +7,29 @@ import entity.User;
 import entity.UserType;
 
 /**
+ * Класс сервиса для пользователей 
  * @author SergeyK
  */
 public class UserService {
 	
-	public static User login(String userName, String password) {
+	/**
+	 * Найти пользователя по логину и паролю
+	 * @param login логин пользователя
+	 * @param password пароль пользователя
+	 * @return user пользователь  
+	 */
+	public static User findUser(String userName, String password) {
 		
-		User user = new User();
-		user.setLogin(userName);
-		user.setPassword(password);
 		IUserDAO<User> userDAO = DAOFactory.getUserDAO();
-		return userDAO.findUser(user);
+		return userDAO.findUser(userName, password);
 	}
 	
+	/**
+	 * Зарегистрировать нового пользователя (по-умолчанию с правами кассира)
+	 * @param login логин пользователя
+	 * @param password пароль пользователя
+	 * @return user пользователь  
+	 */
 	public static User registration(String userName, String email, String password) {
 		
 		IUserDAO<User> userDAO = DAOFactory.getUserDAO();

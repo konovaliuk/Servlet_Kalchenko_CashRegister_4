@@ -8,6 +8,7 @@ import entity.User;
 import service.UserService;
 
 /**
+ * Класс Command для регистрации нового пользователя
  * @author SergeyK
  */
 public class RegistrationCommand implements Command {

@@ -4,8 +4,11 @@ import entity.User;
 
 public interface IUserDAO<T> extends IDAO<T> {
 
-	public User findUser(User user);
-    //public int insert(User user);
-    //public void update();
-    //public void delete(User user);
+	/**
+	 * Найти пользователя по логину и паролю
+	 * @param login логин пользователя
+	 * @param password пароль пользователя
+	 * @return user пользователь  
+	 */
+	public User findUser(String login, String password);
 }

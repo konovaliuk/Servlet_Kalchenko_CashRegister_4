@@ -9,9 +9,6 @@ import entity.Checkspec;
 
 public class CheckSpecDAO implements ICheckSpecDAO<Checkspec> {
 
-	/**connection используется для транзакций в разных DAO*/
-	private Connection connection;
-	
 	private static CheckSpecDAO instance;
 	
 	private CheckSpecDAO() {
@@ -24,10 +21,6 @@ public class CheckSpecDAO implements ICheckSpecDAO<Checkspec> {
 		return instance;		
 	}
 	
-	/**
-	 * Добавить запись в таблицу спецификации чека
-	 * @param checkspec добавляемая запись
-	 */
 	@Override
 	public Long insert(Checkspec checkspec) {
 		if (checkspec != null) {
@@ -53,13 +46,14 @@ public class CheckSpecDAO implements ICheckSpecDAO<Checkspec> {
 		return null;
 	}
 
-	/**
-	 * Добавить список записей в таблицу спецификации чека
-	 * @param checkspecs список записей
-	 */
+	@Override
 	public int insertAll(List<Checkspec> specifications) {
+		return insertAll(null, specifications);
+	}
+	
+	public int insertAll(Connection connection, List<Checkspec> specifications) {
 		if (specifications != null && specifications.size() > 0) {
-			Connection conn = (this.connection == null ? DAOManager.getConnection() : this.connection);
+			Connection conn = (connection == null ? DAOManager.getConnection() : connection);
 			try (PreparedStatement statement = conn.prepareStatement("INSERT INTO checkspec "
 						+ "(id_check, id_good, quant, price, total, nds, ndstotal, canceled) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")) {
 				for (Checkspec checkspec : specifications) {
@@ -78,7 +72,7 @@ public class CheckSpecDAO implements ICheckSpecDAO<Checkspec> {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {
-				if (conn != null && this.connection == null) {
+				if (conn != null && connection == null) {
 			        try {
 			            conn.close();
 			        } catch (SQLException e) { e.printStackTrace();}
@@ -88,10 +82,6 @@ public class CheckSpecDAO implements ICheckSpecDAO<Checkspec> {
 		return -1;
 	}	
 	
-	/**
-	 * Найти все записи из таблицы спецификации чека
-	 * @param where строка запроса where для поиска
-	 */
     public List<Checkspec> findAll(String where) {
     	List<Checkspec> checkspecs = new ArrayList<>();
 		try (Connection connection = DAOManager.getConnection();
@@ -119,10 +109,6 @@ public class CheckSpecDAO implements ICheckSpecDAO<Checkspec> {
 		return checkspecs;
     }
 	
-	/**
-	 * Обновить запись в таблице спецификации чека
-	 * @param checkspecs обновляемая запись
-	 */
 	@Override
 	public void update(Checkspec checkspec) {
 		if (checkspec != null) {
@@ -147,10 +133,6 @@ public class CheckSpecDAO implements ICheckSpecDAO<Checkspec> {
 		}
 	}
 
-	/**
-	 * Удалить запись в таблице спецификации чека
-	 * @param checkspecs удаляемая запись
-	 */
 	@Override
 	public void delete(Checkspec checkspec) {
 		if (checkspec != null) {
@@ -165,10 +147,6 @@ public class CheckSpecDAO implements ICheckSpecDAO<Checkspec> {
 		}
 	}
 
-	/**
-	 * Найти запись из таблицы спецификации чека по id
-	 * @param id номер записи
-	 */
 	@Override
 	public Checkspec findCheckSpec(Long id) {
 		try (Connection connection = DAOManager.getConnection();
@@ -194,21 +172,5 @@ public class CheckSpecDAO implements ICheckSpecDAO<Checkspec> {
 			e.printStackTrace();
 		}
 		return null;
-	}
-	
-	/**
-	 * Получить connection для транзакций
-	 * @return connection возвращаемый connection
-	 */
-	public Connection getConnection() {
-		return connection;
-	}
-
-	/**
-	 * Установить connection для транзакций
-	 * @param connection устанавливаемый connection
-	 */
-	public void setConnection(Connection connection) {
-		this.connection = connection;
 	}
 }

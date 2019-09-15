@@ -1,9 +1,10 @@
 package command;
 
 /**
+ * Фабрика создания Command
  * @author SergeyK
  */
-public final class CommandFactory {
+public class CommandFactory {
 	
 	private static CommandFactory instance;
 	
@@ -17,6 +18,11 @@ public final class CommandFactory {
 		return instance;		
 	}
 	
+	/**
+	 * Получить Command
+	 * @param command вид команда
+	 * @return Command
+	 */
 	public Command getCommand(Commands command) {
 		switch(command) {
 			case LOGIN:

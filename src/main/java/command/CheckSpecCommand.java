@@ -9,6 +9,7 @@ import entity.*;
 import service.CheckService;
 
 /**
+ * Класс Command для формирования спецификации по коду товара или наименованию товара 
  * @author SergeyK
  */
 public class CheckSpecCommand implements Command {

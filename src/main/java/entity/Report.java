@@ -18,70 +18,81 @@ public class Report {
 	List<Detail> detail = new ArrayList<>();
 
 	/**
-	 * @param timestamp
+	 * Установить время печати
+	 * @param timestamp время печати
 	 */
 	public void setPrinttime(Timestamp printtime) {
 		this.printtime = printtime;		
 	}
 	
 	/**
-	 * @return the printtime
+	 * Получить время печати
+	 * @return printtime время печати
 	 */
 	public Timestamp getPrinttime() {
 		return printtime;
 	}
 
 	/**
-	 * @param countCheck
+	 * Установить количество чеков
+	 * @param countCheck количество чеков
 	 */
 	public void setCountCheck(int countCheck) {
 		this.countCheck = countCheck;
 	}
 	
 	/**
-	 * @return the countCheck
+	 * Получить количество чеков
+	 * @return countCheck количество чеков
 	 */
 	public int getCountCheck() {
 		return countCheck;
 	}
 	
 	/**
-	 * @param countCheck
+	 * Установить количество отмененных чеков
+	 * @param countCheck количество отмененных чеков
 	 */
 	public void setCountCancelCheck(int countCancelCheck) {
 		this.countCancelCheck = countCancelCheck;
 	}
 
 	/**
-	 * @return the countCancelCheck
+	 * Получить количество отмененных чеков
+	 * @return countCheck количество отмененных чеков
 	 */
 	public int getCountCancelCheck() {
 		return countCancelCheck;
 	}
 
 	/**
-	 * @return the detail
+	 * Получить список записей блока detail 
+	 * @param detail список записей 
 	 */
 	public List<Detail> getDetail() {
 		return detail;
 	}
 
 	/**
-	 * @param detail the detail to set
+	 * Установить список записей для блока detail 
+	 * @param detail список записей 
 	 */
 	public void setDetail(List<Detail> detail) {
 		this.detail = detail;
 	}
 	
+	/**
+	 * Класс для вывода на печать в очет детальных позиций
+	 */
 	public class Detail {
 
 		public Detail() {
 			super();
 		}		
 		/**
-		 * @param nds
-		 * @param ndsTotal
-		 * @param total
+		 * @param nds ставка НДС
+		 * @param ndsTotal Сумма НДС
+		 * @param total Сумма
 		 */
 		public Detail(int nds, double ndsTotal, double total) {
 			this.nds = nds;

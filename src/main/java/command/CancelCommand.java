@@ -4,9 +4,12 @@ import java.util.List;
 import javax.servlet.http.*;
 import dao.*;
 import entity.*;
+import service.ReportGenerator;
 import service.ServiceUtil;
 
 /**
+ * Command отмены чека / спецификации чека,
+ * печати X- отчета, Z-отчета 
  * @author SergeyK
  */
 public class CancelCommand implements Command {
@@ -57,18 +60,17 @@ public class CancelCommand implements Command {
 							.mapToDouble(o -> o.getTotal()).sum();
 					check.setTotal(total);
 					ICheckDAO<Check> checkDAO = DAOFactory.getCheckDAO();
-					checkDAO.update(check);
-					//req.setAttribute("checkspecs", checkspecs);						
+					checkDAO.update(check);						
 				}
 			}
 			url = "cancel";
 		}
 		String btnXReport = req.getParameter("btnXReport");
 		String btnZReport = req.getParameter("btnZReport");
-		if (btnXReport != null) {
-			//ReportGenerator.printXReport();
+		if (btnXReport != null) {			
 			Report xReport = ServiceUtil.getDataReport();
 			session.setAttribute("xReport", xReport);
+			ReportGenerator.printXReport();
 			url = "report";
 		} else if (btnZReport != null) {
 			//session.setAttribute("zReport", zReport);

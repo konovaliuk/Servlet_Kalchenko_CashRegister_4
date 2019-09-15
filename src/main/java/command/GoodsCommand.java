@@ -4,13 +4,12 @@ import java.util.List;
 
 import javax.servlet.http.*;
 
-import org.apache.log4j.Logger;
-import org.omg.CORBA.Object;
-
 import entity.Goods;
 import service.GoodsService;
 
 /**
+ * Класс для добавления товара в базу данных, 
+ * отображения всех товаров с pagination
  * @author SergeyK
  */
 public class GoodsCommand implements Command {
@@ -22,9 +21,8 @@ public class GoodsCommand implements Command {
         if (req.getParameter("page") != null) {
             page = Integer.parseInt(req.getParameter("page"));
         }
-        String url = "goods" + (page > 1 ? "?page=" + page : "");		
-		String buttonSave = req.getParameter("btnSaveGood");
-		if (buttonSave != null) {
+        String url = "goods" + (page > 1 ? "?page=" + page : "");
+		if (req.getParameter("btnSaveGood") != null) {
 			int code = Integer.valueOf(req.getParameter("code"));
 			String name = req.getParameter("name");
 			Long goodsId = GoodsService.addGoods(code, name, Double.valueOf(req.getParameter("quant")), 

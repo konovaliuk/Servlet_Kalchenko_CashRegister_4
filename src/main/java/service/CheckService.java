@@ -19,18 +19,22 @@ import entity.Goods;
 import entity.User;
 
 /**
+ * Класс сервиса для чеков 
  * @author SergeyK
  */
 public class CheckService {	
 
 	private static Logger logger = null;
-	/**
-	 * @param logger
-	 */
-	public static void setLogger(Logger log) {
-		logger = log;		
-	}
 	
+	/**
+	 * Сформировать спецификацию по найденному коду товара или наименованию товара 
+	 * @param xcode код товара
+	 * @param xname наименование товара
+	 * @param quant количество товара
+	 * @param price цена за единицу товара
+	 * @param nds ставка НДС
+	 * @return спецификация чека
+	 */
 	public static Checkspec addCheckSpec(String xcode, String xname, Double quant, Double price, String nds) {
 		
 		Goods existsGoods = null;
@@ -50,18 +54,17 @@ public class CheckService {
 			spec.setQuant(quant);
 			spec.setPrice(price);						
 			spec.setTotal(BigDecimal.valueOf(spec.getQuant()).multiply(BigDecimal.valueOf(spec.getPrice())).doubleValue());
-			//String nds = req.getParameter("nds");
 			spec.setNds(nds != null ? Integer.valueOf(nds) : 0);
 			spec.setNdstotal(BigDecimal.valueOf(spec.getTotal()).multiply(BigDecimal.valueOf(spec.getNds())).divide(new BigDecimal(100)).doubleValue());
-			//checkspecs.add(spec);
-			//req.setAttribute("addedCheckSpec", code);
 			return spec;
 		}
 		return null;
 	}
 
 	/**
-	 * 
+	 * Добавить чек со спецификациями (в транзакции)
+	 * @param user пользователь, который создал чек
+	 * @param checkspecs список спецификаций чека
 	 */
 	public static int addCheck(User user, List<Checkspec> checkspecs) {
 		
@@ -77,11 +80,9 @@ public class CheckService {
 		Connection conn = DAOManager.getConnection();
 		try {	//транзакция (добавление заголовка счета и спецификаций)
 			conn.setAutoCommit(false);
-			checkDAO.setConnection(conn);
-			Long idCheck = checkDAO.insert(check);
+			Long idCheck = checkDAO.insert(conn, check);
 			checkspecs.stream().peek(o -> o.setIdCheck(idCheck)).collect(Collectors.toList());
-			checkspecDAO.setConnection(conn);
-			countAdd = checkspecDAO.insertAll(checkspecs);
+			countAdd = checkspecDAO.insertAll(conn, checkspecs);
 			conn.commit();
 		} catch (SQLException e) {
 			logger.error("Ошибка транзакции при добавлении чека и спецификаций. ", e);
@@ -93,11 +94,17 @@ public class CheckService {
 		} finally {
 			try {
 				conn.setAutoCommit(true);
-				checkDAO.setConnection(null);
-				checkspecDAO.setConnection(null);
 				conn.close();
 			} catch (SQLException e) { logger.error("Ошибка транзакции. ", e);		}
 		}
 		return countAdd;
+	}
+	
+	/**
+	 * Установить логгер
+	 * @param logger
+	 */
+	public static void setLogger(Logger log) {
+		logger = log;		
 	}
 }

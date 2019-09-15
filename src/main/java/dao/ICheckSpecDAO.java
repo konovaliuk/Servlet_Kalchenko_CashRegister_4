@@ -8,18 +8,24 @@ import entity.Checkspec;
 public interface ICheckSpecDAO<CheckSpec> extends IDAO<CheckSpec> {
 
 	/**
-	 * @param id
-	 * @return
+	 * Найти запись по Id
+	 * @param id записи
+	 * @return объект по найденной записи
 	 */
 	CheckSpec findCheckSpec(Long id);
 
 	/**
-	 * @param checkspecs
+	 * Добавить запись в таблицу чеки
+	 * @param specifications добавляемая запись
+	 * @return количество добавленных записей
 	 */
 	int insertAll(List<Checkspec> specifications);
 
 	/**
-	 * @param connection
+	 * Добавить запись в таблицу чеки
+	 * @param connection для транзакций
+	 * @param specifications добавляемая запись
+	 * @return количество добавленных записей
 	 */
-	void setConnection(Connection connection);
+	int insertAll(Connection connection, List<Checkspec> specifications);
 }

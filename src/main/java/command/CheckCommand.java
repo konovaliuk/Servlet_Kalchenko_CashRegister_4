@@ -11,6 +11,7 @@ import entity.User;
 import service.CheckService;
 
 /**
+ * Класс Command для добавления чека со спецификациями
  * @author SergeyK
  */
 public class CheckCommand implements Command {

@@ -23,15 +23,17 @@ DROP TABLE IF EXISTS `check`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `check` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `creator` int(11) NOT NULL COMMENT 'Автор',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `creator` bigint(20) NOT NULL COMMENT 'Автор',
   `crtime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания чека',
   `total` double NOT NULL DEFAULT '0' COMMENT 'Сумма чека',
   `discount` double NOT NULL DEFAULT '0' COMMENT 'Сумма скидки',
-  `canceled` int(1) NOT NULL DEFAULT '0' COMMENT 'Признак аннулирования',
+  `canceled` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Признак аннулирования',
   PRIMARY KEY (`id`),
+  KEY `creator_idx` (`creator`),
+  CONSTRAINT `creator` FOREIGN KEY (`creator`) REFERENCES `user` (`id`),
   CONSTRAINT `canceled` CHECK (((`canceled` = 0) or (`canceled` = 1)))
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Чек';
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Чек';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +42,7 @@ CREATE TABLE `check` (
 
 LOCK TABLES `check` WRITE;
 /*!40000 ALTER TABLE `check` DISABLE KEYS */;
-INSERT INTO `check` VALUES (5,2,'2019-09-02 00:37:00',0,0,0),(6,2,'2019-09-02 00:37:00',0,0,0),(7,2,'2019-09-02 00:37:00',0,0,0),(8,2,'2019-09-02 00:37:00',194,0,0),(9,2,'2019-09-02 00:37:00',0,0,0),(10,2,'2019-09-02 00:37:00',144,0,0),(11,2,'2019-09-02 00:37:00',24,0,0),(12,2,'2019-09-02 00:37:00',144,0,0),(13,2,'2019-09-02 00:37:00',24,0,0),(14,2,'2019-09-02 00:37:00',144,0,0),(15,2,'2019-09-02 00:37:00',2464,0,0),(16,2,'2019-09-02 00:37:00',3410,0,0),(17,2,'2019-09-02 00:37:00',1837,0,0),(18,2,'2019-09-02 00:37:00',0,0,0),(19,2,'2019-09-02 00:37:00',10132,0,0),(20,2,'2019-09-02 00:37:00',0,0,0),(21,2,'2019-09-02 00:37:00',903,0,1),(22,2,'2019-09-02 00:37:00',1089,0,0),(23,2,'2019-09-02 00:37:00',250,0,0),(25,2,'2019-09-02 00:37:00',190,0,0),(26,2,'2019-09-02 00:37:00',850,0,0),(27,2,'2019-09-02 00:37:00',1750,0,0),(28,2,'2019-09-06 00:58:13',1650,0,0);
+INSERT INTO `check` VALUES (5,2,'2019-09-02 00:37:00',0,0,0),(6,2,'2019-09-02 00:37:00',0,0,0),(7,2,'2019-09-02 00:37:00',0,0,0),(8,2,'2019-09-02 00:37:00',194,0,0),(9,2,'2019-09-02 00:37:00',0,0,0),(10,2,'2019-09-02 00:37:00',144,0,0),(11,2,'2019-09-02 00:37:00',24,0,0),(12,2,'2019-09-02 00:37:00',144,0,0),(13,2,'2019-09-02 00:37:00',24,0,0),(14,2,'2019-09-02 00:37:00',144,0,0),(15,2,'2019-09-02 00:37:00',2464,0,0),(16,2,'2019-09-02 00:37:00',3410,0,0),(17,2,'2019-09-02 00:37:00',1837,0,0),(18,2,'2019-09-02 00:37:00',0,0,0),(19,2,'2019-09-02 00:37:00',10132,0,0),(20,2,'2019-09-02 00:37:00',0,0,0),(21,2,'2019-09-02 00:37:00',903,0,1),(22,2,'2019-09-02 00:37:00',1089,0,0),(23,2,'2019-09-02 00:37:00',250,0,0),(25,2,'2019-09-02 00:37:00',190,0,0),(26,2,'2019-09-02 00:37:00',850,0,0),(27,2,'2019-09-02 00:37:00',1750,0,0),(28,2,'2019-09-06 00:58:13',1650,0,0),(29,2,'2019-09-14 23:12:31',168,0,0),(30,2,'2019-09-14 23:14:00',24,0,0);
 /*!40000 ALTER TABLE `check` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -53,21 +55,21 @@ DROP TABLE IF EXISTS `checkspec`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `checkspec` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_check` int(11) NOT NULL COMMENT 'Заголовок счета',
-  `id_good` int(11) NOT NULL COMMENT 'Товар',
+  `id_check` bigint(20) NOT NULL COMMENT 'Заголовок счета',
+  `id_good` bigint(20) NOT NULL COMMENT 'Товар',
   `quant` double NOT NULL DEFAULT '0' COMMENT 'Количество',
   `price` double NOT NULL DEFAULT '0' COMMENT 'Цена',
   `total` double NOT NULL DEFAULT '0' COMMENT 'Сумма',
   `nds` int(3) DEFAULT '0' COMMENT '% НДС',
   `ndstotal` double NOT NULL DEFAULT '0' COMMENT 'Сумма НДС',
-  `canceled` int(1) NOT NULL DEFAULT '0' COMMENT 'Признак аннулирования спецификации',
+  `canceled` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Признак аннулирования спецификации',
   PRIMARY KEY (`id`),
   KEY `id_check_idx` (`id_check`),
   KEY `id_good_idx` (`id_good`),
-  CONSTRAINT `id_check` FOREIGN KEY (`id_check`) REFERENCES `check` (`id`),
+  CONSTRAINT `id_check` FOREIGN KEY (`id_check`) REFERENCES `check` (`id`) ON DELETE CASCADE,
   CONSTRAINT `id_good` FOREIGN KEY (`id_good`) REFERENCES `goods` (`id`),
   CONSTRAINT `canceled_spec` CHECK (((`canceled` = 0) or (`canceled` = 1)))
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Чек (спецификации)';
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Чек (спецификации)';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -76,7 +78,7 @@ CREATE TABLE `checkspec` (
 
 LOCK TABLES `checkspec` WRITE;
 /*!40000 ALTER TABLE `checkspec` DISABLE KEYS */;
-INSERT INTO `checkspec` VALUES (7,21,4,12,12,144,20,28.8,0),(8,21,2,23,33,759,20,151.8,0),(9,22,2,33,33,1089,20,217.8,0),(10,23,2,5,100,500,20,100,1),(11,23,4,5,50,250,20,50,1),(12,23,4,5,50,250,20,50,1),(13,23,4,5,50,250,20,50,0),(15,25,2,1,100,100,20,20,0),(16,25,4,5,18,90,20,18,0),(17,26,5,100,8.5,850,20,170,0),(18,27,5,200,8.75,1750,7,122.5,0),(19,28,2,0,33,0,20,0,0),(20,28,2,0,33,0,20,0,0),(21,28,2,50,33,1650,20,330,0);
+INSERT INTO `checkspec` VALUES (7,21,4,12,12,144,20,28.8,0),(8,21,2,23,33,759,20,151.8,0),(9,22,2,33,33,1089,20,217.8,0),(10,23,2,5,100,500,20,100,1),(11,23,4,5,50,250,20,50,1),(12,23,4,5,50,250,20,50,1),(13,23,4,5,50,250,20,50,0),(15,25,2,1,100,100,20,20,0),(16,25,4,5,18,90,20,18,0),(17,26,5,100,8.5,850,20,170,0),(18,27,5,200,8.75,1750,7,122.5,0),(19,28,2,0,33,0,20,0,0),(20,28,2,0,33,0,20,0,0),(21,28,2,50,33,1650,20,330,0),(24,30,2,2,12,24,20,4.8,0);
 /*!40000 ALTER TABLE `checkspec` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -88,7 +90,7 @@ DROP TABLE IF EXISTS `goods`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `goods` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `code` int(4) unsigned NOT NULL,
   `name` varchar(255) NOT NULL,
   `quant` double unsigned zerofill NOT NULL,
@@ -96,7 +98,7 @@ CREATE TABLE `goods` (
   `comments` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `code_UNIQUE` (`code`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -105,7 +107,7 @@ CREATE TABLE `goods` (
 
 LOCK TABLES `goods` WRITE;
 /*!40000 ALTER TABLE `goods` DISABLE KEYS */;
-INSERT INTO `goods` VALUES (2,33,'путрушка',0000000000000000000007,'кг','прим'),(3,20,'помидор',0000000000000000000020,'кг',''),(4,12,'огурцы',0000000000000000000050,'кг',''),(5,34,'арбуз',0000000000000000000100,'кг',''),(6,1,'буряк',0000000000000000000050,'кг',''),(7,2,'морковь',0000000000000000000200,'кг',''),(8,200,'Конфеты Ромашка',0000000000000000000100,'кг','');
+INSERT INTO `goods` VALUES (2,33,'Лук репчатый',0000000000000000000007,'кг','прим'),(3,20,'Петрушка',0000000000000000000020,'кг',''),(4,12,'Сливы',0000000000000000000050,'кг',''),(5,34,'Редис',0000000000000000000100,'кг',''),(6,1,'Буряк',0000000000000000000050,'кг',''),(7,2,'Морковь',0000000000000000000200,'кг',''),(9,3,'Огурцы',0000000000000000000200,'кг',NULL),(10,4,'Картошка',0000000000000000000100,'кг',NULL),(11,5,'Лук репчатый',0000000000000000000100,'кг',NULL),(12,6,'Чеснок',0000000000000000000100,'кг',NULL),(13,7,'Бананы',0000000000000000000070,'кг',NULL),(14,8,'Капуста цветная',0000000000000000000240,'кг',NULL),(15,9,'Капуста ранняя',0000000000000000000240,'кг',NULL),(16,10,'Капуста пекинская',0000000000000000000080,'кг',NULL),(17,11,'Дыня',0000000000000000000135,'кг',NULL),(18,13,'Арбуз',0000000000000000000135,'кг',NULL),(19,14,'Персик',0000000000000000000135,'кг',NULL),(20,15,'Киви',0000000000000000000135,'кг',NULL),(21,16,'Авокадо',0000000000000000000075,'кг',NULL),(22,17,'Ананас',0000000000000000000090,'кг',NULL),(23,19,'Укроп',0000000000000000000010,'кг',NULL),(25,18,'Горох',0000000000000000000010,'кг',NULL),(26,21,'Фасоль',0000000000000000000010,'кг',NULL),(27,22,'Персики',0000000000000000000010,'кг',NULL),(28,23,'Лук зеленый',0000000000000000000015,'кг',NULL),(29,24,'Апельсины',0000000000000000000015,'кг',NULL),(30,25,'Мандарины',0000000000000000000015,'кг',NULL),(31,26,'Кабачок',0000000000000000000015,'кг',NULL),(33,27,'Тыква',0000000000000000000015,'кг',NULL),(34,35,'Груши',0000000000000000000015,'кг',NULL),(35,36,'Яблоки',0000000000000000000015,'кг',NULL),(36,37,'Инжир',0000000000000000000015,'кг',NULL);
 /*!40000 ALTER TABLE `goods` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -117,15 +119,15 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_user_type` int(11) NOT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id_user_type` bigint(20) NOT NULL,
   `login` varchar(45) NOT NULL,
   `password` varchar(45) NOT NULL,
   `name` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id_user_type_idx` (`id_user_type`),
-  CONSTRAINT `id_user_type` FOREIGN KEY (`id_user_type`) REFERENCES `user_type` (`id_user_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `id_user_type` FOREIGN KEY (`id_user_type`) REFERENCES `user_type` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -134,7 +136,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,4,'a1@gmail.com','1','Сергей'),(2,3,'a2@gmail.com','2','Александр'),(16,2,'a3@gmail.com','3','Николай'),(17,3,'a@gmail.com','1','a@gmail.com'),(18,3,'a@gmail.com','1','a@gmail.com'),(19,3,'a@gmail.com','1','a@gmail.com'),(20,3,'a@gmail.com','1','a@gmail.com'),(21,3,'a@gmail.com','1','a@gmail.com');
+INSERT INTO `user` VALUES (1,4,'a1@gmail.com','1','Сергей'),(2,3,'a2@gmail.com','2','Александр'),(16,2,'a3@gmail.com','3','Николай'),(17,3,'a@gmail.com','1','a@gmail.com'),(18,3,'a@gmail.com','1','a@gmail.com'),(19,3,'a@gmail.com','1','a@gmail.com'),(20,3,'a@gmail.com','1','a@gmail.com'),(21,3,'a@gmail.com','1','a@gmail.com'),(22,3,'f2@gmail.com','f2','Sergeo'),(23,3,'f3@gmail.com','f3','f3');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -146,10 +148,10 @@ DROP TABLE IF EXISTS `user_type`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user_type` (
-  `id_user_type` int(11) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `type` varchar(45) NOT NULL,
   `description` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id_user_type`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -212,4 +214,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-09-11  2:55:14
+-- Dump completed on 2019-09-15 23:56:18

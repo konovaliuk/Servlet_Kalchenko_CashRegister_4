@@ -1,8 +1,11 @@
 package dao;
 
 public interface IUserTypeDAO<T> extends IDAO<T> {
-    //public int insert(UserType user);
-    //public void update(UserType user);
-    //public void delete(UserType user);
+
+	/**
+	 * Найти тип пользователя(роль) по наименованию 
+	 * @param type тип пользователя
+	 * @return Id пользователя
+	 */
 	public Long findUserType(String type);
 }
