@@ -2,10 +2,13 @@ package command;
 
 import java.util.List;
 import javax.servlet.http.*;
+
+import org.apache.log4j.Logger;
+
 import dao.*;
 import entity.*;
-import service.ReportGenerator;
-import service.ServiceUtil;
+import service.*;
+import transaction.TransactionException;
 
 /**
  * Command отмены чека / спецификации чека,
@@ -14,6 +17,8 @@ import service.ServiceUtil;
  */
 public class CancelCommand implements Command {
 
+	private static Logger logger = Logger.getLogger(CancelCommand.class);
+	
 	@Override
 	public String execute(HttpServletRequest req, HttpServletResponse resp) {
 		String url = "/";
@@ -28,9 +33,10 @@ public class CancelCommand implements Command {
 			if (check != null) {
 				session.setAttribute("check", check);
 				session.setAttribute("checkspecs", checkspecs);
+				session.setAttribute("checkfind", null);
 			} else {
 				session.setAttribute("check", null);
-				req.setAttribute("checkfind", false);
+				session.setAttribute("checkfind", checkid);
 			}
 			url = "cancel";
 		}
@@ -51,7 +57,7 @@ public class CancelCommand implements Command {
 				int checkspecnum = Integer.valueOf(req.getParameter("checkspecnum"));
 				@SuppressWarnings("unchecked")
 				List<Checkspec> checkspecs = (List<Checkspec>) session.getAttribute("checkspecs");
-				if (checkspecs != null) {
+				if (checkspecs != null && checkspecs.size() >= checkspecnum) {
 					checkspecs.get(checkspecnum - 1).setCanceled(1);
 					ICheckSpecDAO<Checkspec> checkspecDAO = DAOFactory.getCheckSpecDAO();
 					checkspecDAO.update(checkspecs.get(checkspecnum - 1));
@@ -60,7 +66,7 @@ public class CancelCommand implements Command {
 							.mapToDouble(o -> o.getTotal()).sum();
 					check.setTotal(total);
 					ICheckDAO<Check> checkDAO = DAOFactory.getCheckDAO();
-					checkDAO.update(check);						
+					checkDAO.update(check);
 				}
 			}
 			url = "cancel";
@@ -70,10 +76,18 @@ public class CancelCommand implements Command {
 		if (btnXReport != null) {			
 			Report xReport = ServiceUtil.getDataReport();
 			session.setAttribute("xReport", xReport);
-			ReportGenerator.printXReport();
+			session.setAttribute("zReport", null);
+			//ReportGenerator.printXReport();
 			url = "report";
 		} else if (btnZReport != null) {
-			//session.setAttribute("zReport", zReport);
+			Report zReport;
+			try {
+				zReport = ServiceUtil.getDataZReport();
+				session.setAttribute("xReport", null);
+				session.setAttribute("zReport", zReport);
+			} catch (TransactionException e) {
+				logger.error("Ошибка транзакции", e);
+			}
 			url = "report";
 		}
 		return url;		

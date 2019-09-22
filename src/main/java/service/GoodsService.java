@@ -14,7 +14,7 @@ import entity.Goods;
  */
 public class GoodsService {
 
-	private static Logger logger = null;
+	private static Logger logger = Logger.getLogger(GoodsService.class);
 	
 	/**
 	 * Добавить товар в базу данных (если товара с заданным кодом нет в наличии)
@@ -63,13 +63,5 @@ public class GoodsService {
 	public static Long count() {
 		IGoodsDAO<Goods> goodsDAO = DAOFactory.getGoodsDAO();		
 		return goodsDAO.count();		
-	}
-	
-	/**
-	 * Установить логгер
-	 * @param logger
-	 */
-	public static void setLogger(Logger log) {
-		logger = log;		
 	}
 }

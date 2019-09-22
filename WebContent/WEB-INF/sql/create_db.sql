@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `cashreg` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `cashreg`;
 -- MySQL dump 10.13  Distrib 8.0.17, for Win64 (x86_64)
 --
 -- Host: localhost    Database: cashreg
@@ -29,11 +31,12 @@ CREATE TABLE `check` (
   `total` double NOT NULL DEFAULT '0' COMMENT 'Сумма чека',
   `discount` double NOT NULL DEFAULT '0' COMMENT 'Сумма скидки',
   `canceled` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Признак аннулирования',
+  `registration` int(11) DEFAULT NULL COMMENT 'Регистрация в Z-отчете',
   PRIMARY KEY (`id`),
   KEY `creator_idx` (`creator`),
   CONSTRAINT `creator` FOREIGN KEY (`creator`) REFERENCES `user` (`id`),
   CONSTRAINT `canceled` CHECK (((`canceled` = 0) or (`canceled` = 1)))
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Чек';
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Чек';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +45,7 @@ CREATE TABLE `check` (
 
 LOCK TABLES `check` WRITE;
 /*!40000 ALTER TABLE `check` DISABLE KEYS */;
-INSERT INTO `check` VALUES (5,2,'2019-09-02 00:37:00',0,0,0),(6,2,'2019-09-02 00:37:00',0,0,0),(7,2,'2019-09-02 00:37:00',0,0,0),(8,2,'2019-09-02 00:37:00',194,0,0),(9,2,'2019-09-02 00:37:00',0,0,0),(10,2,'2019-09-02 00:37:00',144,0,0),(11,2,'2019-09-02 00:37:00',24,0,0),(12,2,'2019-09-02 00:37:00',144,0,0),(13,2,'2019-09-02 00:37:00',24,0,0),(14,2,'2019-09-02 00:37:00',144,0,0),(15,2,'2019-09-02 00:37:00',2464,0,0),(16,2,'2019-09-02 00:37:00',3410,0,0),(17,2,'2019-09-02 00:37:00',1837,0,0),(18,2,'2019-09-02 00:37:00',0,0,0),(19,2,'2019-09-02 00:37:00',10132,0,0),(20,2,'2019-09-02 00:37:00',0,0,0),(21,2,'2019-09-02 00:37:00',903,0,1),(22,2,'2019-09-02 00:37:00',1089,0,0),(23,2,'2019-09-02 00:37:00',250,0,0),(25,2,'2019-09-02 00:37:00',190,0,0),(26,2,'2019-09-02 00:37:00',850,0,0),(27,2,'2019-09-02 00:37:00',1750,0,0),(28,2,'2019-09-06 00:58:13',1650,0,0),(29,2,'2019-09-14 23:12:31',168,0,0),(30,2,'2019-09-14 23:14:00',24,0,0);
+INSERT INTO `check` VALUES (21,2,'2019-09-02 00:37:00',903,0,1,NULL),(22,2,'2019-09-02 00:37:00',1089,0,0,NULL),(23,2,'2019-09-02 00:37:00',500,0,0,NULL),(25,2,'2019-09-02 00:37:00',190,0,0,NULL),(26,2,'2019-09-02 00:37:00',850,0,0,NULL),(27,2,'2019-09-02 00:37:00',1750,0,0,NULL),(28,2,'2019-09-06 00:58:13',1650,0,0,NULL),(29,2,'2019-09-14 23:12:31',168,0,0,NULL),(30,2,'2019-09-14 23:14:00',24,0,0,NULL),(31,2,'2019-09-21 22:34:39',24,0,0,NULL),(35,16,'2019-09-22 03:29:35',4,0,0,1),(36,16,'2019-09-22 03:39:33',17.5,0,0,1);
 /*!40000 ALTER TABLE `check` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -69,7 +72,7 @@ CREATE TABLE `checkspec` (
   CONSTRAINT `id_check` FOREIGN KEY (`id_check`) REFERENCES `check` (`id`) ON DELETE CASCADE,
   CONSTRAINT `id_good` FOREIGN KEY (`id_good`) REFERENCES `goods` (`id`),
   CONSTRAINT `canceled_spec` CHECK (((`canceled` = 0) or (`canceled` = 1)))
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Чек (спецификации)';
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Чек (спецификации)';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -78,8 +81,32 @@ CREATE TABLE `checkspec` (
 
 LOCK TABLES `checkspec` WRITE;
 /*!40000 ALTER TABLE `checkspec` DISABLE KEYS */;
-INSERT INTO `checkspec` VALUES (7,21,4,12,12,144,20,28.8,0),(8,21,2,23,33,759,20,151.8,0),(9,22,2,33,33,1089,20,217.8,0),(10,23,2,5,100,500,20,100,1),(11,23,4,5,50,250,20,50,1),(12,23,4,5,50,250,20,50,1),(13,23,4,5,50,250,20,50,0),(15,25,2,1,100,100,20,20,0),(16,25,4,5,18,90,20,18,0),(17,26,5,100,8.5,850,20,170,0),(18,27,5,200,8.75,1750,7,122.5,0),(19,28,2,0,33,0,20,0,0),(20,28,2,0,33,0,20,0,0),(21,28,2,50,33,1650,20,330,0),(24,30,2,2,12,24,20,4.8,0);
+INSERT INTO `checkspec` VALUES (7,21,4,12,12,144,20,28.8,0),(8,21,2,23,33,759,20,151.8,0),(10,23,2,5,100,500,20,100,1),(11,23,4,5,50,250,20,50,1),(12,23,4,5,50,250,20,50,0),(13,23,4,5,50,250,20,50,0),(15,25,2,1,100,100,20,20,0),(16,25,4,5,18,90,20,18,1),(17,26,5,100,8.5,850,20,170,0),(18,27,5,200,8.75,1750,7,122.5,0),(19,28,2,0,33,0,20,0,0),(20,28,2,0,33,0,20,0,0),(21,28,2,50,33,1650,20,330,0),(24,30,2,2,12,24,20,4.8,0),(25,31,4,2,12,24,20,4.8,0),(26,35,7,2,2,4,20,0.8,0),(27,36,7,2.5,2.5,6.25,20,1.25,0),(28,36,2,3,3.75,11.25,20,2.25,0);
 /*!40000 ALTER TABLE `checkspec` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `fiscal`
+--
+
+DROP TABLE IF EXISTS `fiscal`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `fiscal` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '№ регистрации(Z-отчета)',
+  `total` double DEFAULT NULL COMMENT 'Сумма',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='фискальная память';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `fiscal`
+--
+
+LOCK TABLES `fiscal` WRITE;
+/*!40000 ALTER TABLE `fiscal` DISABLE KEYS */;
+INSERT INTO `fiscal` VALUES (1,5803),(2,5803),(3,5803),(4,5803),(5,5803),(6,5803),(7,4714),(8,4714),(9,4714),(10,4714),(11,0),(12,0),(13,0),(14,0),(15,0),(16,0),(17,0),(18,0),(19,0),(20,0),(21,0),(22,0),(23,0),(24,0),(25,0),(26,0),(27,0),(28,0),(29,0),(30,0),(31,0),(32,0),(33,0),(34,0),(35,0),(36,4738),(37,4738),(38,4738),(39,4738),(40,4738),(41,4738),(42,4902),(43,4915.5);
+/*!40000 ALTER TABLE `fiscal` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -214,4 +241,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-09-15 23:56:18
+-- Dump completed on 2019-09-22  3:48:33

@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author Admin
+ * @author SergeyK
  */
 public class UserType implements Serializable {
 
@@ -46,30 +46,24 @@ public class UserType implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-
+    
     @Override
-    public boolean equals(Object object) {
-        if (!(object instanceof UserType)) {
-            return false;
-        }
-        UserType other = (UserType) object;
+    public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null || getClass() != obj.getClass())
+			return false;
+		UserType other = (UserType) obj;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
     }
 
-
     @Override
     public int hashCode() {
-        int hash = 0;
+        int hash = 31;
         hash += (id != null ? id.hashCode() : 0);
         return hash;
-    }
-    
-    @Override
-    public String toString() {
-        return "UserType[ idUserType=" + id + " ]";
-    }
-    
+    } 
 }

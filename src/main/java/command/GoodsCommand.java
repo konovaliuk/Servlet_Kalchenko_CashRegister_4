@@ -33,14 +33,13 @@ public class GoodsCommand implements Command {
 				req.setAttribute("addedGood", null);
 				req.setAttribute("code", code);				
 			}
-		} else {			        
-	        int recordsPerPage = 10;
-			List<Goods> goods = GoodsService.view(page, recordsPerPage);
-			req.setAttribute("viewGoods", goods);
-			req.setAttribute("currentPage", page);
-			long countGoods = GoodsService.count();
-			req.setAttribute("maxPages", countGoods / recordsPerPage + Math.min(countGoods % recordsPerPage, 1));
 		}
+        int recordsPerPage = 10;
+		List<Goods> goods = GoodsService.view(page, recordsPerPage);
+		req.setAttribute("viewGoods", goods);
+		req.setAttribute("currentPage", page);
+		long countGoods = GoodsService.count();
+		req.setAttribute("maxPages", countGoods / recordsPerPage + Math.min(countGoods % recordsPerPage, 1));		
 		return url;
 	}
 }

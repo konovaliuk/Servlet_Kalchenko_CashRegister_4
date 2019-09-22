@@ -27,7 +27,7 @@
 			 	<p>${sessionScope.xReport.printtime}</p>
 			 	<table style="width: 100%;">
   					<tr>
-  						<td>Чеков: </td>
+  						<td>Чеків: </td>
 				 		<td class="alignRight">${sessionScope.xReport.countCheck}</td>
 				 	</tr>
 				 	  <tr>
@@ -48,6 +48,11 @@
 							<td>${detail.total}</td>
 						</tr>
 					</c:forEach>
+					<tr>
+  						<td>Разом</td>
+				 		<td>${sessionScope.xReport.sumNdsTotal}</td>
+				 		<td>${sessionScope.xReport.sumTotal}</td>
+				 	</tr>
 				</table>
 				<table style="width: 100%;">	
 					<tr>
@@ -59,7 +64,80 @@
 						<td class="alignRight">0</td>
 					</tr>
 				</table>
-				<p>СЛУЖБОВИЙ ЧЕК</p>
+				<p class="reptitle">СЛУЖБОВИЙ ЧЕК</p>
+				<a class ="print-doc" href="javascript:(print());"> <fmt:message key="report.print"/></a>
+			</div>			
+		</c:if>
+		
+		<c:if test="${not empty sessionScope.user and sessionScope.user.idUserType == '2' and not empty sessionScope.zReport}">
+			<p class="reptitle">Z-Звіт</p>
+			<div class="center">						 
+			 	<table style="width: 100%;">
+  					<tr>
+  						<td>ЧЕКІВ</td>
+				 		<td class="alignRight">${sessionScope.zReport.countCheck}</td>
+					 </tr>
+				 	  <tr>
+  						<td>АНУЛЬОВАНО</td>
+				 		<td class="alignRight">${sessionScope.zReport.countCancelCheck}</td>
+				 	</tr>
+				 	<tr>
+  						<td>ОБІГ А</td>
+				 		<td class="alignRight">${sessionScope.zReport.totalA}</td>
+				 	</tr>
+				 	<tr>
+  						<td>ОБІГ Б</td>
+				 		<td class="alignRight">${sessionScope.zReport.totalB}</td>
+				 	</tr>
+				 	<tr>
+  						<td>ОБІГ В</td>
+				 		<td class="alignRight">${sessionScope.zReport.totalC}</td>
+				 	</tr>
+				 	<tr>
+  						<td>ОБІГ</td>
+				 		<td class="alignRight">${sessionScope.zReport.sumTotal}</td>
+				 	</tr>
+				 	<tr>
+  						<td>ПДВ А=20,00%</td>
+				 		<td class="alignRight">${sessionScope.zReport.ndsTotalA}</td>
+				 	</tr>
+				 	<tr>
+  						<td>ПДВ Б=7,00%</td>
+				 		<td class="alignRight">${sessionScope.zReport.ndsTotalB}</td>
+				 	</tr>
+				 	<tr>
+  						<td>ПДВ В=0,00%</td>
+				 		<td class="alignRight">${sessionScope.zReport.ndsTotalC}</td>
+				 	</tr>
+				 	<tr>
+  						<td>ПОДАТОК</td>
+				 		<td class="alignRight">${sessionScope.zReport.sumNdsTotal}</td>
+				 	</tr>
+			 	</table>
+				<table style="width: 100%;">	
+					<tr>
+						<td>Службове внесення: </td>
+						<td class="alignRight">0</td>
+					</tr>
+					<tr>
+						<td>Службова видача: </td>
+						<td class="alignRight">0</td>
+					</tr>
+					<tr>
+						<td>РЕГІСТРИ ДЕННИХ ПІДСУМКІВ ОБНУЛЕНІ</td>
+						<td class="alignRight"></td>					
+					</tr>
+					<tr>
+						<td>ГОТІВКА У СЕЙФІ</td>
+						<td class="alignRight">0</td>
+					</tr>
+					<tr>
+						<td>ФІСКАЛЬНИЙ ЗВІТ ДІЙСНИЙ</td>
+						<td class="alignRight">${sessionScope.zReport.number}</td>
+					</tr>
+				</table>
+				<p>${sessionScope.zReport.printtime}</p>
+				<p class="reptitle">ФІСКАЛЬНИЙ ЧЕК</p>
 				<a class ="print-doc" href="javascript:(print());"> <fmt:message key="report.print"/></a>
 			</div>			
 		</c:if>

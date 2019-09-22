@@ -1,30 +1,17 @@
 package service;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import org.apache.log4j.Logger;
-
-import dao.DAOFactory;
-import dao.DAOManager;
-import dao.ICheckDAO;
-import dao.ICheckSpecDAO;
-import dao.IGoodsDAO;
-import entity.Check;
-import entity.Checkspec;
-import entity.Goods;
-import entity.User;
+import dao.*;
+import entity.*;
+import transaction.*;
 
 /**
  * Класс сервиса для чеков 
  * @author SergeyK
  */
-public class CheckService {	
-
-	private static Logger logger = null;
+public class CheckService {
 	
 	/**
 	 * Сформировать спецификацию по найденному коду товара или наименованию товара 
@@ -35,7 +22,7 @@ public class CheckService {
 	 * @param nds ставка НДС
 	 * @return спецификация чека
 	 */
-	public static Checkspec addCheckSpec(String xcode, String xname, Double quant, Double price, String nds) {
+	public static Checkspec addCheckSpec(String xcode, String xname, Double quant, Double price, String nds) throws NumberFormatException {
 		
 		Goods existsGoods = null;
 		Integer code = null;
@@ -65,10 +52,11 @@ public class CheckService {
 	 * Добавить чек со спецификациями (в транзакции)
 	 * @param user пользователь, который создал чек
 	 * @param checkspecs список спецификаций чека
+	 * @return кол-во добавленных записей
+	 * @throws TransactionException 
 	 */
-	public static int addCheck(User user, List<Checkspec> checkspecs) {
+	public static void addCheck(User user, List<Checkspec> checkspecs) throws TransactionException {
 		
-		int countAdd = 0;
 		ICheckDAO<Check> checkDAO = DAOFactory.getCheckDAO();
 		ICheckSpecDAO<Checkspec> checkspecDAO = DAOFactory.getCheckSpecDAO();
 		Check check = new Check();		
@@ -76,35 +64,11 @@ public class CheckService {
 		
 		double total = checkspecs.stream().mapToDouble(o -> o.getTotal()).sum();
 		check.setTotal(total);
-		check.setCheckspecs(checkspecs);
-		Connection conn = DAOManager.getConnection();
-		try {	//транзакция (добавление заголовка счета и спецификаций)
-			conn.setAutoCommit(false);
-			Long idCheck = checkDAO.insert(conn, check);
+		//check.setCheckspecs(checkspecs);
+		TransactionHandler.execute(connection -> {
+			Long idCheck = checkDAO.insert(connection, check);
 			checkspecs.stream().peek(o -> o.setIdCheck(idCheck)).collect(Collectors.toList());
-			countAdd = checkspecDAO.insertAll(conn, checkspecs);
-			conn.commit();
-		} catch (SQLException e) {
-			logger.error("Ошибка транзакции при добавлении чека и спецификаций. ", e);
-			try {						
-				conn.rollback();
-			} catch (SQLException ex) {	
-				logger.error("Ошибка транзакции. ", e);
-			}				
-		} finally {
-			try {
-				conn.setAutoCommit(true);
-				conn.close();
-			} catch (SQLException e) { logger.error("Ошибка транзакции. ", e);		}
-		}
-		return countAdd;
-	}
-	
-	/**
-	 * Установить логгер
-	 * @param logger
-	 */
-	public static void setLogger(Logger log) {
-		logger = log;		
+			checkspecDAO.insertAll(connection, checkspecs);
+		});
 	}
 }

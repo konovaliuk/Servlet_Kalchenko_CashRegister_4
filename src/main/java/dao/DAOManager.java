@@ -16,7 +16,6 @@ public final class DAOManager {
 
 	private DAOManager() throws Exception {
 		try {
-			System.out.println(System.getProperty(Context.PROVIDER_URL));
 			InitialContext ctx = new InitialContext();
 			if (ctx == null) {
 				throw new Exception("No context!");

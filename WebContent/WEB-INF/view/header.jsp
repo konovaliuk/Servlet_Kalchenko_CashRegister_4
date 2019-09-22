@@ -18,6 +18,9 @@
 			  <c:if test="${sessionScope.user.idUserType == '3' || sessionScope.user.idUserType == '2'}">			  
 			  	<li><a href="check" class="down"><fmt:message key="menu.check"/></a>
 			  </c:if>
+			  <c:if test="${sessionScope.user.idUserType == '2'}">			  
+			  	<li><a href="cancel" class="down"><fmt:message key="cancel.check"/></a>
+			  </c:if>
 		      <li><a href="logout" class="down"><fmt:message key="menu.logout"/></a>
 		</c:if>
 	    <c:if test="${empty sessionScope.user}">

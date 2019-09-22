@@ -13,10 +13,11 @@ import service.UserService;
  */
 public class RegistrationCommand implements Command {
 
+	private static Logger logger = Logger.getLogger(RegistrationCommand.class);
+	
 	@Override
 	public String execute(HttpServletRequest req, HttpServletResponse resp) {
 		
-		Logger logger = (Logger)req.getServletContext().getAttribute("log4");
 		User user = UserService.registration(req.getParameter("name"), req.getParameter("email"), req.getParameter("password"));
 		if(user != null) {
 			req.getSession().setAttribute("user", user);

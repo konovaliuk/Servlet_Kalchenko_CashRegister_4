@@ -19,8 +19,7 @@
 <body>
 
 <jsp:include page="header.jsp" flush="true" />
-<h1><fmt:message key="title"/></h1>
-		<h2><fmt:message key="index.welcome"/></h2>
+<h1><fmt:message key="title"/>. <fmt:message key="index.welcome"/></h1>
 		<h3><font color="red">
 		   <c:if test="${not empty userNotExists and userNotExists eq 'true'}">
 		      <fmt:message key="index.nouser"/> <!-- учетная запись отсутствует -->
@@ -38,7 +37,7 @@
 					</tr>
 					<tr>
 						<td style="text-align: left"><fmt:message key="registration.password"/>:</td>
-						<td><input name="password" type="password" placeholder="Пароль" size="35" maxlength="35" required /></td>
+						<td><input name="password" type="password" placeholder="<fmt:message key="registration.password"/>" size="35" maxlength="35" required /></td>
 					</tr>
 					<tr>
 						<td><input type="submit" class="button" name="btnLogin" value=<fmt:message key="menu.enter"/> /></td>					

@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author Admin
+ * @author SergeyK
  */
 public class User implements Serializable {
 
@@ -74,26 +74,22 @@ public class User implements Serializable {
     }
 
     @Override
-    public boolean equals(Object object) {
-        if (!(object instanceof User)) {
-            return false;
-        }
-        User other = (User) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
     public int hashCode() {
         int hash = 31;
         hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
-
+    
     @Override
-    public String toString() {
-        return "User[ id=" + id + ", idUserType=" + idUserType + ", login=" + login + ", name=" + name + " ]";
+    public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null || getClass() != obj.getClass())
+			return false;
+        User other = (User) obj;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
     }
 }

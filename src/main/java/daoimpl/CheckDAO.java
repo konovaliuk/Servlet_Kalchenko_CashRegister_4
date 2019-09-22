@@ -69,6 +69,7 @@ public class CheckDAO implements ICheckDAO<Check> {
 				check.setTotal(resultSet.getDouble("total"));
 				check.setDiscount(resultSet.getDouble("discount"));
 				check.setCanceled(resultSet.getInt("canceled"));
+				check.setRegistration(resultSet.getInt("registration"));
 				checks.add(check);				
 			}
 		} catch (SQLException e) {
@@ -82,12 +83,13 @@ public class CheckDAO implements ICheckDAO<Check> {
 		if (check != null) {
 			try(Connection connection = DAOManager.getConnection();
 				PreparedStatement statement = connection.prepareStatement(
-						"UPDATE cashreg.check SET creator = ?, total = ?, discount = ?, canceled = ? WHERE id = ?")) {
+						"UPDATE cashreg.check SET creator = ?, total = ?, discount = ?, canceled = ?, registration = ? WHERE id = ?")) {
 				statement.setLong(1, check.getCreator());
 				statement.setDouble(2, check.getTotal());
 				statement.setDouble(3, check.getDiscount());
 				statement.setInt(4, check.getCanceled());
-				statement.setLong(5, check.getId());
+				statement.setObject(5, check.getRegistration());
+				statement.setLong(6, check.getId());
 				statement.executeUpdate();
 				System.out.println("Update result: Check id " + check.getId());
 			} catch (SQLException e) {
@@ -125,11 +127,32 @@ public class CheckDAO implements ICheckDAO<Check> {
 				check.setTotal(resultSet.getDouble("total"));
 				check.setDiscount(resultSet.getDouble("discount"));
 				check.setCanceled(resultSet.getInt("canceled"));
+				check.setRegistration((Integer)resultSet.getObject("registration"));
 				return check;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();			
 		}
 		return null;
+	}
+
+	@Override
+	public int update(Connection connection, String field, Object value, String where) {
+		int rows = 0;
+		Connection conn = (connection == null ? DAOManager.getConnection() : connection);
+		try(PreparedStatement statement = conn.prepareStatement(
+					"UPDATE cashreg.check SET " + field + " = ? " + (where != null ? " WHERE " + where : ""))) {
+			statement.setObject(1, value);
+			rows = statement.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("CheckDAO.update() error" + e.getMessage());
+		} finally {
+			if (conn != null && connection == null) {
+		        try {
+		            conn.close();
+		        } catch (SQLException e) { e.printStackTrace();}
+		    }
+		}
+		return rows;	
 	}
 }

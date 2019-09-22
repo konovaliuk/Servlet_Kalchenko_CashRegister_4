@@ -14,29 +14,30 @@ public class UserService {
 	
 	/**
 	 * Найти пользователя по логину и паролю
-	 * @param login логин пользователя
+	 * @param login логин(email) пользователя
 	 * @param password пароль пользователя
-	 * @return user пользователь  
+	 * @return user пользователь
 	 */
-	public static User findUser(String userName, String password) {
+	public static User findUser(String login, String password) {
 		
 		IUserDAO<User> userDAO = DAOFactory.getUserDAO();
-		return userDAO.findUser(userName, password);
+		return userDAO.findUser(login, password);
 	}
 	
 	/**
 	 * Зарегистрировать нового пользователя (по-умолчанию с правами кассира)
-	 * @param login логин пользователя
+	 * @param userName имя пользователя
+	 * @param login логин(email) пользователя
 	 * @param password пароль пользователя
 	 * @return user пользователь  
 	 */
-	public static User registration(String userName, String email, String password) {
+	public static User registration(String userName, String login, String password) {
 		
 		IUserDAO<User> userDAO = DAOFactory.getUserDAO();
 		IUserTypeDAO<UserType> userTypeDao = DAOFactory.getUserTypeDAO();
 		User user = new User();
 		user.setName(userName);
-		user.setLogin(email);
+		user.setLogin(login);
 		user.setPassword(password);
 		user.setIdUserType(userTypeDao.findUserType("cashier"));	//по-умолчанию при регистрации права кассира
 		userDAO.insert(user);

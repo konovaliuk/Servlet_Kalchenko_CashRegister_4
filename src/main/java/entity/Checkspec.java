@@ -117,13 +117,12 @@ public class Checkspec implements Serializable {
 		this.xname = xname;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (int) (id ^ (id >>> 32));
-		return result;
-	}
+    @Override
+    public int hashCode() {
+        int hash = 31;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
 
 	@Override
 	public boolean equals(Object obj) {
@@ -135,12 +134,5 @@ public class Checkspec implements Serializable {
 		if (id != other.id)
 			return false;
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Checkspec [canceled=" + canceled + ", id=" + id + ", idCheck=" + idCheck + ", idGood=" + idGood
-				+ ", nds=" + nds + ", ndstotal=" + ndstotal + ", price=" + price + ", quant=" + quant + ", total="
-				+ total + ", xcode=" + xcode + ", xname=" + xname + "]";
 	}
 }

@@ -13,6 +13,8 @@ import service.UserService;
  */
 public class LoginCommand implements Command {
 
+	private static Logger logger = Logger.getLogger(LoginCommand.class);
+	
 	@Override
 	public String execute(HttpServletRequest req, HttpServletResponse resp) {
 		
@@ -21,18 +23,19 @@ public class LoginCommand implements Command {
 		if (dbUser != null) {
 			session.setAttribute("userNotExists", null);
 			session.setAttribute("user", dbUser);
-			if (dbUser.getIdUserType() == 4) {
+			if (dbUser.getIdUserType() == 4) {		//товаровед
 				return "goods";
-			} else if (dbUser.getIdUserType() == 3) {
+			} else if (dbUser.getIdUserType() == 3) {	//кассир
 				return "check";
-			} else if (dbUser.getIdUserType() == 2) {
+			} else if (dbUser.getIdUserType() == 2) {	//старший кассир
 				return "cancel";
 			}
-			Logger logger = (Logger)req.getServletContext().getAttribute("log4");
 			logger.info("Авторизация пользователя " + dbUser.getName());
 		} else {
-			session.setAttribute("userNotExists", true);
-			session.setAttribute("user", null);			
+			if (session != null) {	//проверка на null для mockito 
+				session.setAttribute("userNotExists", true);
+				session.setAttribute("user", null);
+			}
 		}
 		return "login";
 	}

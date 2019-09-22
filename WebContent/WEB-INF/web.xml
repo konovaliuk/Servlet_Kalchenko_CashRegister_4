@@ -24,7 +24,6 @@ version="4.0">
   	<url-pattern>/check</url-pattern>
   	<url-pattern>/goods</url-pattern>
   	<url-pattern>/cancel</url-pattern>
-  	<url-pattern>/report</url-pattern>
   </servlet-mapping>  
 
   <filter>

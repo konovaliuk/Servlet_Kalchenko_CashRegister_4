@@ -20,7 +20,7 @@
 <jsp:include page="header.jsp" flush="true" /> 
 <h1><fmt:message key="title"/>. <fmt:message key="check.title"/></h1>
 
-	<c:if test="${sessionScope.user.idUserType == '3'}">
+	<c:if test="${sessionScope.user.idUserType == '3' or sessionScope.user.idUserType == '2'}">
 		<h4>
 		   <c:if test="${not empty addedCheck and addedCheck eq 'true'}">
 		      Чек <fmt:message key="check.success"/>!
@@ -31,8 +31,9 @@
 		  <!-- <c:if test="${not empty addedCheckSpec}">
 		      Товар с кодом ${addedCheckSpec} успешно добавлен!
 		   </c:if> -->
-		   <c:if test="${not empty goodCodeNotFound}"><fmt:message key="check.code"/> ${goodCodeNotFound} <fmt:message key="check.codenotfound"/>!</c:if>
-		   <c:if test="${not empty goodNameNotFound}"><fmt:message key="check.goodname"/> ${goodNameNotFound} <fmt:message key="check.namenotfound"/>!</c:if>
+		   <c:if test="${not empty wronginput}"><fmt:message key="check.wronginput"/>!</c:if>
+		   <c:if test="${not empty goodsCodeNotFound}"><fmt:message key="check.code"/> ${goodsCodeNotFound} <fmt:message key="check.codenotfound"/>!</c:if>
+		   <c:if test="${not empty goodsNameNotFound}"><fmt:message key="check.goodname"/> ${goodsNameNotFound} <fmt:message key="check.namenotfound"/>!</c:if>
 		</h4>
 		<FORM method="POST" name="addcheck">
 			<table>
@@ -42,7 +43,7 @@
 				</tr>
 				<tr>
 					<td style="text-align: left"><fmt:message key="check.code"/>:</td>
-					<td><input id="id_code" name="xcode" type="number" size="4"/></td>
+					<td><input id="id_code" name="xcode" type="number" size="4" min="0" step="1"/></td>
 				</tr>
 				<tr>
 					<td style="text-align: left"><fmt:message key="check.quant"/>:</td>
@@ -75,7 +76,7 @@
 				</tr>
 			</table>
 		</FORM>
-		 <c:if test="${sessionScope.checkspecs.size() > '0'}">
+		 <c:if test="${sessionScope.addcheckspecs.size() > '0'}">
 			<table class="table-border">
 				<tr>
 					<th><fmt:message key="check.num"/></th>
@@ -87,7 +88,7 @@
 					<th><fmt:message key="check.ndstotal"/></th>
 					<th><fmt:message key="check.total"/></th>
 				</tr>			
-				<c:forEach items="${sessionScope.checkspecs}" var ="checkspecs" varStatus="counter">
+				<c:forEach items="${sessionScope.addcheckspecs}" var ="checkspecs" varStatus="counter">
 					<tr>
 						<td>${counter.count}</td>
 						<td>${checkspecs.xname}</td>

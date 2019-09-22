@@ -22,14 +22,7 @@ public class ReportGenerator {
 	 */
 	public static void printXReport() {
 		print("xReport.jrxml");		
-	}
-	
-	/**
-	 * Печать Z-отчета
-	 */	
-	public static void printZReport() {
-		//print("zReport.jrxml");		
-	}
+	}	
 	
 	private static void print(String nameReport) {
 		Map<String, Object> prepPars = new HashMap<>();
@@ -37,9 +30,6 @@ public class ReportGenerator {
 		  try {
 			  System.out.println("Start printing..");
 			  URI jrxmlFileName = new URI(Thread.currentThread().getContextClassLoader().getResource(nameReport).getFile());
-			  System.out.println(jrxmlFileName);
-			  System.out.println(new URI(Thread.currentThread().getContextClassLoader().getResource("").getFile()));
-
 			  String htmlFile = System.getProperty("user.home") + System.getProperty("file.separator") + formatter.format(Calendar.getInstance().getTime()) + ".html";
 	
 			  JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFileName.getPath());

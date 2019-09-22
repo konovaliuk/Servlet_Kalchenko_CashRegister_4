@@ -19,11 +19,14 @@ public class ReqFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		request.setCharacterEncoding("UTF-8");
+		String encoding = ((HttpServletRequest)request).getCharacterEncoding();
+		if (!"UTF-8".equals(encoding)) {
+			request.setCharacterEncoding("UTF-8");
+		}
 		HttpSession session = ((HttpServletRequest)request).getSession();
 		String path = ((HttpServletRequest)request).getServletPath();
  		if ((session == null || session.getAttribute("user") == null) 
-				&& !path.startsWith("/log")) {
+				&& !path.startsWith("/log") && !path.equals("/registration")) {
 			((HttpServletResponse)response).sendRedirect("login");
 			return;
 		}		

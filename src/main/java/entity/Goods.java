@@ -51,7 +51,6 @@ public class Goods implements Serializable {
 		this.measure = measure;
 	}
 
-
 	public double getQuant() {
 		return this.quant;
 	}
@@ -66,10 +65,25 @@ public class Goods implements Serializable {
 
 	public void setComments(String comments) {
 		this.comments = comments;
-	}
-	
+	}	
+
     @Override
-    public String toString() {
-        return "goods[ id=" + id + ", code=" + code + ", name=" + name + ", measure=" + measure + ", comments=" + comments + " ]";
+    public int hashCode() {
+        int hash = 31;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
     }
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null || getClass() != obj.getClass())
+			return false;
+		Goods other = (Goods) obj;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+		return true;
+	}
 }

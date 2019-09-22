@@ -29,18 +29,8 @@ public class DAOFactory {
 	public static ICheckSpecDAO<Checkspec> getCheckSpecDAO() {
 		return CheckSpecDAO.getInstance();
 	}
-
-	/*
-	public static IDAO getDAO(Table table) {
-		switch (table) {
-		case USER:
-			return new UserDAO();			
-		case USER_TYPE:
-			return new UserTypeDAO();
-		case GOOD:
-			return new GoodDAO();
-		default:
-			return null;
-		}
-	}*/
+	
+	public static IFiscalDAO<Fiscal> getFiscalDAO() {
+		return FiscalDAO.getInstance();
+	}
 }

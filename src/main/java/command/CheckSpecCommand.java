@@ -19,25 +19,29 @@ public class CheckSpecCommand implements Command {
 
 		HttpSession session = req.getSession();
 		@SuppressWarnings("unchecked")
-		List<Checkspec> checkspecs = (List<Checkspec>) session.getAttribute("checkspecs");
+		List<Checkspec> checkspecs = (List<Checkspec>) session.getAttribute("addcheckspecs");
 		if (checkspecs == null) {
 			checkspecs = new ArrayList<>();
-			session.setAttribute("checkspecs", checkspecs);
+			session.setAttribute("addcheckspecs", checkspecs);
 		}
 		String xcode = req.getParameter("xcode");
 		String xname = req.getParameter("xname");
-		Checkspec spec = CheckService.addCheckSpec(xcode, xname, Double.valueOf(req.getParameter("quant")), 
-				Double.valueOf(req.getParameter("price")), req.getParameter("nds"));
-		if (spec != null) {
-			checkspecs.add(spec);
-			req.setAttribute("checkspecs", checkspecs);
-		} else {
-			if (xcode != null && !xcode.isEmpty()) {
-				req.setAttribute("goodCodeNotFound", xcode);
+		try {
+			Double quant = Double.valueOf(req.getParameter("quant"));
+			Double price = Double.valueOf(req.getParameter("price"));
+			Checkspec spec = CheckService.addCheckSpec(xcode, xname, quant, price, req.getParameter("nds"));
+			if (spec != null) {
+				checkspecs.add(spec);
 			} else {
-				req.setAttribute("goodNameNotFound", xname);
+				if (xcode != null && !xcode.isEmpty()) {
+					req.setAttribute("goodsCodeNotFound", xcode);
+				} else {
+					req.setAttribute("goodsNameNotFound", xname);
+				}
 			}
-		}		
+		} catch (NumberFormatException e) {
+			req.setAttribute("wronginput", true);
+		}
 		return "check";				
 	}
 }

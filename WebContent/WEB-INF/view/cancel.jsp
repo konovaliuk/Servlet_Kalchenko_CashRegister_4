@@ -11,7 +11,7 @@
 <html>
  <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <title>Кассовый аппарат</title>
+  <title><fmt:message key="title"/></title>
   	<style>	
 	    <%@include file="/css/style.css"%>
 	</style>
@@ -19,25 +19,25 @@
 <body>
 <jsp:include page="header.jsp" flush="true" />
 <h1><fmt:message key="title"/>. <fmt:message key="cancel.title"/>.</h1>
-	<c:if test="${sessionScope.user.idUserType == '2'}">
-		<h4>
 
-		</h4>
+	<c:if test="${sessionScope.user.idUserType == '2'}">
 		<FORM action="cancel" method="POST">
 			<table>
 				<tr>
-					<td style="text-align: left">№ чека:</td>
-					<td><input name="checkid" type="number" min="1" placeholder="<fmt:message key="cancel.search"/> по № чека" autofocus required /></td>
+					<td style="text-align: left"><fmt:message key="check.number"/>:</td>
+					<td><input name="checkid" type="number" min="1" placeholder="<fmt:message key="cancel.search"/>" autofocus required /></td>
 				</tr>
 				<tr>
 					<td><input type="submit" class="button" name="btnSearchCheck" value=<fmt:message key="cancel.find"/> /> </td>
 				</tr>
 			</table>
 		</FORM>
-		<c:if test="${sessionScope.check.canceled == '1'}"><p>Чек № ${sessionScope.check.id} отменен!</p></c:if>
-		<c:if test="${not empty checkfind}"><p>Чек не найден</p></c:if>
+		<c:if test="${sessionScope.check.canceled == '1'}"><p><fmt:message key="check.check"/> № ${sessionScope.check.id} <fmt:message key="cancel.canceled"/>!</p></c:if>
+		<c:if test="${not empty sessionScope.checkfind}">
+		     <p><fmt:message key="cancel.findfail"/>!</p>
+		</c:if>
 		<c:if test="${sessionScope.check.canceled == '0' and not empty checkspecs}">
-			<p>Чек № ${sessionScope.check.id} на сумму ${sessionScope.check.total}</p>
+			<p><fmt:message key="check.check"/> № ${sessionScope.check.id} на сумму ${sessionScope.check.total}</p>
 			<table class="table-border">
 				<tr>
 					<th><fmt:message key="check.num"/></th>
