@@ -28,7 +28,7 @@ public class CheckCommand implements Command {
 		HttpSession session = req.getSession();
 		@SuppressWarnings("unchecked")
 		List<Checkspec> checkspecs = (List<Checkspec>) session.getAttribute("addcheckspecs");
-		if (req.getParameter("btnCreateCheck") != null && checkspecs.size() > 0) {
+		if (req.getParameter("btnCreateCheck") != null && checkspecs != null && checkspecs.size() > 0) {
 			try {
 				CheckService.addCheck((User) session.getAttribute("user"), checkspecs);
 				req.setAttribute("addedCheck", true);
@@ -39,7 +39,7 @@ public class CheckCommand implements Command {
 				logger.error("Ошибка транзакции при добавлении чека и спецификаций. ", e);
 			}
 		}
-		if (req.getParameter("btnCancelCheck") != null) {
+		if (req.getParameter("btnCancelCheck") != null && checkspecs != null) {
 			checkspecs.clear();
 		}
 		return "check";

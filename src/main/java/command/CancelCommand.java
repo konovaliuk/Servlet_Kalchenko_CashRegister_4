@@ -40,9 +40,7 @@ public class CancelCommand implements Command {
 			}
 			url = "cancel";
 		}
-		String btnCancelCheck = req.getParameter("btnCancelCheck");
-		String btnCancelCheckspec = req.getParameter("btnCancelCheckspec");
-		if (btnCancelCheck != null) {
+		if (req.getParameter("btnCancelCheck") != null) {
 			Check check = (Check)session.getAttribute("check");
 			if (check != null) {
 				check.setCanceled(1);
@@ -51,9 +49,10 @@ public class CancelCommand implements Command {
 				session.setAttribute("check", check);
 			}
 			url = "cancel";
-		} else if (btnCancelCheckspec != null) {
+		} else if (req.getParameter("btnCancelCheckspec") != null) {
 			Check check = (Check)session.getAttribute("check");
-			if (check != null) {
+			String specnumber = req.getParameter("checkspecnum");
+			if (check != null && specnumber !=null && !specnumber.isEmpty()) {
 				int checkspecnum = Integer.valueOf(req.getParameter("checkspecnum"));
 				@SuppressWarnings("unchecked")
 				List<Checkspec> checkspecs = (List<Checkspec>) session.getAttribute("checkspecs");
@@ -71,15 +70,13 @@ public class CancelCommand implements Command {
 			}
 			url = "cancel";
 		}
-		String btnXReport = req.getParameter("btnXReport");
-		String btnZReport = req.getParameter("btnZReport");
-		if (btnXReport != null) {			
+		if (req.getParameter("btnXReport") != null) {			
 			Report xReport = ServiceUtil.getDataReport();
 			session.setAttribute("xReport", xReport);
 			session.setAttribute("zReport", null);
-			//ReportGenerator.printXReport();
+			ReportGenerator.printXReport();
 			url = "report";
-		} else if (btnZReport != null) {
+		} else if (req.getParameter("btnZReport") != null) {
 			Report zReport;
 			try {
 				zReport = ServiceUtil.getDataZReport();

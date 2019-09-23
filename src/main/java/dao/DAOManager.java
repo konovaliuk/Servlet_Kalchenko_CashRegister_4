@@ -9,8 +9,13 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import org.apache.log4j.Logger;
+
+import command.CancelCommand;
+
 public final class DAOManager {
 
+	private static Logger logger = Logger.getLogger(CancelCommand.class);
 	private static DAOManager dao;
 	private static DataSource ds;
 
@@ -25,7 +30,7 @@ public final class DAOManager {
 				throw new Exception("Data sourse not found!");
 			}
 		} catch (NamingException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 	}	
 	
@@ -40,7 +45,7 @@ public final class DAOManager {
 		try {
 			return ds.getConnection();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Ошибка при получении connection", e);
 		}
 		return null;
 	}

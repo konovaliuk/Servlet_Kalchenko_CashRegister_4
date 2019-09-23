@@ -15,7 +15,16 @@ input:disabled {
 	border: 1px solid black;
 	cellspacing: 3px;	
 }
-
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+.pagination a:hover:not(.active) {
+    background-color: #00ffff;
+    border-radius: 5px;
+}
 nav ul {
   list-style: none;
   margin: 0;
@@ -44,7 +53,6 @@ nav a {
   color: #003559;
 }
 .down:after {
-  content: "\f107";
   margin-left: 8px;
   font-family: FontAwesome;
 }

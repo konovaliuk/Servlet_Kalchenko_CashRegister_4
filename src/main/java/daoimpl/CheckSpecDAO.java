@@ -3,6 +3,8 @@ package daoimpl;
 import java.sql.*;
 import java.util.*;
 
+import org.apache.log4j.Logger;
+
 import dao.DAOManager;
 import dao.ICheckSpecDAO;
 import entity.Checkspec;
@@ -10,6 +12,7 @@ import entity.Checkspec;
 public class CheckSpecDAO implements ICheckSpecDAO<Checkspec> {
 
 	private static CheckSpecDAO instance;
+	private static Logger logger = Logger.getLogger(CheckDAO.class);
 	
 	private CheckSpecDAO() {
 	}
@@ -40,7 +43,7 @@ public class CheckSpecDAO implements ICheckSpecDAO<Checkspec> {
 				rs.next();
 				return rs.getLong(1);
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logger.error(e);
 			}
 		}
 		return null;
@@ -70,12 +73,12 @@ public class CheckSpecDAO implements ICheckSpecDAO<Checkspec> {
 				int [] count = statement.executeBatch();
 				return count.length;
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logger.error(e);
 			} finally {
 				if (conn != null && connection == null) {
 			        try {
 			            conn.close();
-			        } catch (SQLException e) { e.printStackTrace();}
+			        } catch (SQLException e) { logger.error(e);}
 			    }
 			}
 		}
@@ -104,7 +107,7 @@ public class CheckSpecDAO implements ICheckSpecDAO<Checkspec> {
 				checkspecs.add(checkspec);				
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 		return checkspecs;
     }
@@ -126,9 +129,8 @@ public class CheckSpecDAO implements ICheckSpecDAO<Checkspec> {
 				statement.setInt(8, checkspec.getCanceled());
 				statement.setLong(9, checkspec.getId());
 				statement.executeUpdate();
-				System.out.println("Update result: Checkspec id " + checkspec.getId());
 			} catch (SQLException e) {
-				System.out.println("Checkspec.update() error" + e.getMessage());
+				logger.error("Checkspec update() error", e);
 			}
 		}
 	}
@@ -169,7 +171,7 @@ public class CheckSpecDAO implements ICheckSpecDAO<Checkspec> {
 				return checkspec;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 		return null;
 	}

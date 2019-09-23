@@ -4,6 +4,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import dao.DAOManager;
 import dao.ICheckDAO;
 import entity.Check;
@@ -11,6 +13,7 @@ import entity.Check;
 public class CheckDAO implements ICheckDAO<Check> {
 	
 	private static CheckDAO instance;
+	private static Logger logger = Logger.getLogger(CheckDAO.class);
 	
 	private CheckDAO() {
 	}
@@ -42,7 +45,7 @@ public class CheckDAO implements ICheckDAO<Check> {
 				rs.next();
 				return rs.getLong(1);
 			} catch (SQLException e) {
-				e.printStackTrace();				
+				logger.error(e);				
 			} finally {
 				if (conn != null && connection == null) {
 			        try {
@@ -73,7 +76,7 @@ public class CheckDAO implements ICheckDAO<Check> {
 				checks.add(check);				
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 		return checks;
     }
@@ -90,10 +93,9 @@ public class CheckDAO implements ICheckDAO<Check> {
 				statement.setInt(4, check.getCanceled());
 				statement.setObject(5, check.getRegistration());
 				statement.setLong(6, check.getId());
-				statement.executeUpdate();
-				System.out.println("Update result: Check id " + check.getId());
+				statement.executeUpdate();				
 			} catch (SQLException e) {
-				System.out.println("CheckDAO.update() error" + e.getMessage());
+				logger.error(e);
 			}
 		}
 	}
@@ -105,9 +107,8 @@ public class CheckDAO implements ICheckDAO<Check> {
 				PreparedStatement statement = connection.prepareStatement("DELETE FROM check WHERE id = ?")) {
 				statement.setLong(1, check.getId());
 				statement.executeUpdate();
-				System.out.println("Delete result: Check id " + check.getId());
 			} catch (SQLException e) {
-				System.out.println("CheckDAO.delete() error");
+				logger.error(e);
 			}
 		}
 	}
@@ -131,7 +132,7 @@ public class CheckDAO implements ICheckDAO<Check> {
 				return check;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();			
+			logger.error(e);		
 		}
 		return null;
 	}
@@ -145,12 +146,12 @@ public class CheckDAO implements ICheckDAO<Check> {
 			statement.setObject(1, value);
 			rows = statement.executeUpdate();
 		} catch (SQLException e) {
-			System.out.println("CheckDAO.update() error" + e.getMessage());
+			logger.error("Check update() error", e);
 		} finally {
 			if (conn != null && connection == null) {
 		        try {
 		            conn.close();
-		        } catch (SQLException e) { e.printStackTrace();}
+		        } catch (SQLException e) { logger.error(e);}
 		    }
 		}
 		return rows;	

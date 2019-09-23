@@ -4,6 +4,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import dao.DAOManager;
 import dao.IGoodsDAO;
 import entity.Goods;
@@ -11,6 +13,7 @@ import entity.Goods;
 public class GoodsDAO implements IGoodsDAO<Goods> {
 
 	private static GoodsDAO instance;
+	private static Logger logger = Logger.getLogger(GoodsDAO.class);
 	
 	private GoodsDAO() {
 	}
@@ -38,7 +41,7 @@ public class GoodsDAO implements IGoodsDAO<Goods> {
 				rs.next();
 				return rs.getLong(1);
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logger.error(e);
 			}
 		}
 		return null;
@@ -72,7 +75,7 @@ public class GoodsDAO implements IGoodsDAO<Goods> {
 				goods.add(product);				
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 		return goods;
     }
@@ -87,7 +90,7 @@ public class GoodsDAO implements IGoodsDAO<Goods> {
 				count = resultSet.getInt("count");
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 		return count;
     }
@@ -103,9 +106,8 @@ public class GoodsDAO implements IGoodsDAO<Goods> {
 				PreparedStatement statement = connection.prepareStatement("DELETE FROM goods WHERE id = ?")) {
 				statement.setLong(1, goods.getId());
 				statement.executeUpdate();
-				System.out.println("Delete result: Goods id " + goods.getId());
 			} catch (SQLException e) {
-				System.out.println("GoodsDAO.delete() error");
+				logger.error(e);
 			}
 		}
 	}
@@ -128,7 +130,7 @@ public class GoodsDAO implements IGoodsDAO<Goods> {
 				return goods;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 		return null;
 	}
@@ -152,7 +154,7 @@ public class GoodsDAO implements IGoodsDAO<Goods> {
 					return goods;
 				}
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logger.error(e);
 			}
 		}
 		return null;

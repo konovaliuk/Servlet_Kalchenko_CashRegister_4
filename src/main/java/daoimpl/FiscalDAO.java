@@ -3,6 +3,8 @@ package daoimpl;
 import java.sql.*;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import dao.DAOManager;
 import dao.IFiscalDAO;
 import entity.Fiscal;
@@ -10,6 +12,7 @@ import entity.Fiscal;
 public class FiscalDAO implements IFiscalDAO<Fiscal> {
 	
 	private static FiscalDAO instance;
+	private static Logger logger = Logger.getLogger(FiscalDAO.class);
 	
 	private FiscalDAO() {
 	}
@@ -42,7 +45,7 @@ public class FiscalDAO implements IFiscalDAO<Fiscal> {
 			if (conn != null && connection == null) {
 		        try {
 		            conn.close();
-		        } catch (SQLException e) { e.printStackTrace();}
+		        } catch (SQLException e) { logger.error(e);}
 		    }
 		}
 		return null;
@@ -64,9 +67,8 @@ public class FiscalDAO implements IFiscalDAO<Fiscal> {
 				PreparedStatement statement = connection.prepareStatement("DELETE FROM fiscal WHERE id = ?")) {
 				statement.setLong(1, fiscal.getId());
 				statement.executeUpdate();
-				System.out.println("Delete result: User id " + fiscal.getId());
 			} catch (SQLException e) {
-				System.out.println("FiscalDAO.delete() error");
+				logger.error(e);
 			}
 		}
 	}

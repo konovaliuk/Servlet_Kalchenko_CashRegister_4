@@ -3,6 +3,8 @@ package daoimpl;
 import java.sql.*;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import dao.DAOManager;
 import dao.IUserTypeDAO;
 import entity.UserType;
@@ -10,6 +12,7 @@ import entity.UserType;
 public class UserTypeDAO implements IUserTypeDAO<UserType> {
 	
 	private static UserTypeDAO instance;
+	private static Logger logger = Logger.getLogger(GoodsDAO.class);
 	
 	private UserTypeDAO() {
 	}
@@ -34,7 +37,7 @@ public class UserTypeDAO implements IUserTypeDAO<UserType> {
 			rs.next();
 			return rs.getLong(1);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 		return null;
 	}
@@ -55,9 +58,8 @@ public class UserTypeDAO implements IUserTypeDAO<UserType> {
 				PreparedStatement statement = connection.prepareStatement("DELETE FROM user_type WHERE id = ?")) {
 				statement.setLong(1, usertype.getId());
 				statement.executeUpdate();
-				System.out.println("Delete result: User id " + usertype.getId());
 			} catch (SQLException e) {
-				System.out.println("UserDAO.delete() error");
+				logger.error(e);
 			}
 		}
 	}
@@ -72,7 +74,7 @@ public class UserTypeDAO implements IUserTypeDAO<UserType> {
 				return result.getLong("id");	
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 		return null;
 	}

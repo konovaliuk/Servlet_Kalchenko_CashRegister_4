@@ -4,6 +4,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import dao.DAOManager;
 import dao.IUserDAO;
 import entity.User;
@@ -11,6 +13,7 @@ import entity.User;
 public class UserDAO implements IUserDAO<User> {
 
 	private static UserDAO instance;
+	private static Logger logger = Logger.getLogger(UserDAO.class);
 	
 	private UserDAO() {
 	}
@@ -37,7 +40,7 @@ public class UserDAO implements IUserDAO<User> {
 				rs.next();
 				return rs.getLong(1);
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logger.error(e);
 			}
 		}
 		return null;
@@ -58,7 +61,7 @@ public class UserDAO implements IUserDAO<User> {
 				users.add(user);					
 			}				
 		} catch (SQLException e) {
-			e.printStackTrace();				
+			logger.error(e);				
 		}
 		return users;
     }
@@ -74,9 +77,8 @@ public class UserDAO implements IUserDAO<User> {
 				PreparedStatement statement = connection.prepareStatement("DELETE FROM users WHERE id = ?")) {
 				statement.setLong(1, user.getId());
 				statement.executeUpdate();
-				System.out.println("Delete result: User id " + user.getId());
 			} catch (SQLException e) {
-				System.out.println("UserDAO.delete() error");
+				logger.error(e);
 			}
 		}
 	}
@@ -100,7 +102,7 @@ public class UserDAO implements IUserDAO<User> {
 				return user;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error("Ошибка при поиске пользователя", e);
 		}
 		return null;
 	}

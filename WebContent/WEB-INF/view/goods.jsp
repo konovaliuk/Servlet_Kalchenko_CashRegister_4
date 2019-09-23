@@ -23,7 +23,7 @@
 	<c:if test="${sessionScope.user.idUserType == '4'}">
 		<h4>
 		   <c:if test="${not empty addedGood}">
-		      Товар ${addedGood} <fmt:message key="check.success"/>!
+		      <fmt:message key="menu.goods"/> ${addedGood} <fmt:message key="check.success"/>!
 		   </c:if>
 		   <c:if test="${not empty code}">
 		      <fmt:message key="check.code"/> ${code} <fmt:message key="goods.exists"/>!
@@ -45,7 +45,11 @@
 				</tr>
 				<tr>
 					<td style="text-align: left"><fmt:message key="goods.measure"/>:</td>
-					<td><input name="measure" type="text" size="45" required /></td>
+					<td><select name="measure" size="1">
+						<option value="кг"><fmt:message key="goods.kilo"/></option>
+						<option value="шт"><fmt:message key="goods.pc"/></option>
+						</select>
+					</td>
 				</tr>
 				<tr>
 					<td style="text-align: left"><fmt:message key="goods.comments"/>:</td>
@@ -79,26 +83,24 @@
 				</tr>	
 			</c:forEach>
 		</table>
-	    <table>
-	        <tr>
-	        	<c:if test="${currentPage != 1}">
-        			<td><a href="?page=${currentPage - 1}">Previous</a></td>
-    			</c:if>
-	            <c:forEach begin="1" end="${maxPages}" var="i">
-	                <c:choose>
-	                    <c:when test="${currentPage == i}">
-	                        <td>${i}</td>
-	                    </c:when>
-	                    <c:otherwise>
-	                        <td><a href="?page=${i}">${i}</a></td>
-	                    </c:otherwise>
-	                </c:choose>
-	            </c:forEach>
-	           	<c:if test="${currentPage < maxPages}">
-	        		<td><a href="?page=${currentPage + 1}">Next</a></td>
-    			</c:if>
-	        </tr>
-	    </table>
+	    <div class="pagination">
+        	<c:if test="${currentPage != 1}">
+       			<td><a href="?page=${currentPage - 1}">«</a></td>
+   			</c:if>
+            <c:forEach begin="1" end="${maxPages}" var="i">
+                <c:choose>
+                    <c:when test="${currentPage == i}">
+                        <td><a>${i}</a></td>
+                    </c:when>
+                    <c:otherwise>
+                        <td><a href="?page=${i}">${i}</a></td>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+           	<c:if test="${currentPage < maxPages}">
+        		<td><a href="?page=${currentPage + 1}">»</a></td>
+   			</c:if>
+		</div>
 	</c:if>
 	</body>
 </html>

@@ -57,7 +57,7 @@ DROP TABLE IF EXISTS `checkspec`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `checkspec` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `id_check` bigint(20) NOT NULL COMMENT 'Заголовок счета',
   `id_good` bigint(20) NOT NULL COMMENT 'Товар',
   `quant` double NOT NULL DEFAULT '0' COMMENT 'Количество',
@@ -96,7 +96,7 @@ CREATE TABLE `fiscal` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '№ регистрации(Z-отчета)',
   `total` double DEFAULT NULL COMMENT 'Сумма',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='фискальная память';
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='фискальная память';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -105,7 +105,7 @@ CREATE TABLE `fiscal` (
 
 LOCK TABLES `fiscal` WRITE;
 /*!40000 ALTER TABLE `fiscal` DISABLE KEYS */;
-INSERT INTO `fiscal` VALUES (1,5803),(2,5803),(3,5803),(4,5803),(5,5803),(6,5803),(7,4714),(8,4714),(9,4714),(10,4714),(11,0),(12,0),(13,0),(14,0),(15,0),(16,0),(17,0),(18,0),(19,0),(20,0),(21,0),(22,0),(23,0),(24,0),(25,0),(26,0),(27,0),(28,0),(29,0),(30,0),(31,0),(32,0),(33,0),(34,0),(35,0),(36,4738),(37,4738),(38,4738),(39,4738),(40,4738),(41,4738),(42,4902),(43,4915.5);
+INSERT INTO `fiscal` VALUES (1,5803),(2,5803),(3,5803),(4,5803),(5,5803),(6,5803),(7,4714),(8,4714),(9,4714),(10,4714),(11,0),(12,0),(13,0),(14,0),(15,0),(16,0),(17,0),(18,0),(19,0),(20,0),(21,0),(22,0),(23,0),(24,0),(25,0),(26,0),(27,0),(28,0),(29,0),(30,0),(31,0),(32,0),(33,0),(34,0),(35,0),(36,4738),(37,4738),(38,4738),(39,4738),(40,4738),(41,4738),(42,4902),(43,4915.5),(44,4898);
 /*!40000 ALTER TABLE `fiscal` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -154,7 +154,7 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id`),
   KEY `id_user_type_idx` (`id_user_type`),
   CONSTRAINT `id_user_type` FOREIGN KEY (`id_user_type`) REFERENCES `user_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -163,7 +163,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,4,'a1@gmail.com','1','Сергей'),(2,3,'a2@gmail.com','2','Александр'),(16,2,'a3@gmail.com','3','Николай'),(17,3,'a@gmail.com','1','a@gmail.com'),(18,3,'a@gmail.com','1','a@gmail.com'),(19,3,'a@gmail.com','1','a@gmail.com'),(20,3,'a@gmail.com','1','a@gmail.com'),(21,3,'a@gmail.com','1','a@gmail.com'),(22,3,'f2@gmail.com','f2','Sergeo'),(23,3,'f3@gmail.com','f3','f3');
+INSERT INTO `user` VALUES (1,4,'a1@gmail.com','1','Сергей'),(2,3,'a2@gmail.com','2','Александр'),(16,2,'a3@gmail.com','3','Николай'),(17,3,'a@gmail.com','1','a@gmail.com'),(18,3,'a@gmail.com','1','a@gmail.com'),(19,3,'a@gmail.com','1','a@gmail.com'),(20,3,'a@gmail.com','1','a@gmail.com'),(21,3,'a@gmail.com','1','a@gmail.com'),(22,3,'f2@gmail.com','f2','Sergeo'),(23,3,'f3@gmail.com','f3','f3'),(24,3,'aa@gmail.com','aa@gmail.com','aa@gmail.com');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -241,4 +241,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-09-22  3:48:33
+-- Dump completed on 2019-09-22 23:16:46
