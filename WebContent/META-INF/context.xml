@@ -23,7 +23,7 @@
 
   <Resource name="jdbc/cashreg" auth="Container" type="javax.sql.DataSource"
                maxActive="100" maxIdle="30" maxWait="10000"
-               username="root" password="MysqlSer0101" driverClassName="com.mysql.cj.jdbc.Driver"
+               username="root" password="root" driverClassName="com.mysql.cj.jdbc.Driver"
                url="jdbc:mysql://localhost:3306/cashreg?serverTimezone=UTC"
 />
 </Context>
