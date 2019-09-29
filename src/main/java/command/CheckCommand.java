@@ -42,6 +42,6 @@ public class CheckCommand implements Command {
 		if (req.getParameter("btnCancelCheck") != null && checkspecs != null) {
 			checkspecs.clear();
 		}
-		return "check";
+		return null;
 	}
 }

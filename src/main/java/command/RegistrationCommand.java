@@ -24,8 +24,9 @@ public class RegistrationCommand implements Command {
 			logger.info("Регистрация нового пользователя " + req.getParameter("name"));
 			return "check";
 		} else {
-			logger.info("Регистрация не удалась");
-			return "registration";
+			logger.info("Регистрация не удалась. Пользователь с таким email уже существует");
+			req.setAttribute("existsLogin",  req.getParameter("email"));
+			return null;
 		}		
 	}
 }

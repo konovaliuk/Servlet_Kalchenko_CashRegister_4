@@ -21,10 +21,9 @@ public class CancelCommand implements Command {
 	
 	@Override
 	public String execute(HttpServletRequest req, HttpServletResponse resp) {
-		String url = "/";
+		String url = null;
 		HttpSession session = req.getSession();
-		String buttonSearch = req.getParameter("btnSearchCheck");
-		if (buttonSearch != null) {
+		if (req.getParameter("btnSearchCheck") != null) {
 			Long checkid = Long.valueOf(req.getParameter("checkid"));
 			ICheckDAO<Check> checkDAO = DAOFactory.getCheckDAO();
 			ICheckSpecDAO<Checkspec> checkspecDAO = DAOFactory.getCheckSpecDAO();
@@ -70,7 +69,7 @@ public class CancelCommand implements Command {
 			}
 			url = "cancel";
 		}
-		if (req.getParameter("btnXReport") != null) {			
+		if (req.getParameter("btnXReport") != null) {
 			Report xReport = ServiceUtil.getDataReport();
 			session.setAttribute("xReport", xReport);
 			session.setAttribute("zReport", null);
@@ -87,6 +86,6 @@ public class CancelCommand implements Command {
 			}
 			url = "report";
 		}
-		return url;		
+		return url;
 	}
 }

@@ -29,9 +29,9 @@ public class ServiceUtil {
 			"	SUM(COUNT(DISTINCT c.id)) OVER() AS countcheck," + 
 			"	s.nds," +
 			"	SUM(s.total) AS total," + 
-			"	SUM(s.ndstotal) AS ndstotal, " +
-			"	SUM(SUM(s.total)) OVER() AS sumtotal, " +  
-			"	SUM(SUM(s.ndstotal)) OVER() AS sumndstotal " +
+			"	round(SUM(s.ndstotal), 2) AS ndstotal, " +
+			"	round(SUM(SUM(s.total)) OVER(), 2) AS sumtotal, " +  
+			"	round(SUM(SUM(s.ndstotal)) OVER(), 2) AS sumndstotal " +
 			"	FROM checkspec s" + 
 			"	INNER JOIN cashreg.check c ON c.id = s.id_check" +
 			"	LEFT JOIN (SELECT COUNT(c1.canceled) AS countcanceled FROM cashreg.check c1 " + 
@@ -44,13 +44,13 @@ public class ServiceUtil {
 			"		WHERE c1.canceled = 1 /*AND cast(c1.crtime as date) = current_date()*/) AS countcanceled, " + 
 			"	SUM(COUNT(DISTINCT c.id)) OVER() AS countcheck," + 
 			"	SUM(CASE WHEN s.nds = 20 THEN s.total ELSE 0 END) AS totalA," + 
-			"	SUM(CASE WHEN s.nds = 20 THEN s.ndstotal ELSE 0 END) AS ndstotalA," +
+			"	round(SUM(CASE WHEN s.nds = 20 THEN s.ndstotal ELSE 0 END), 2) AS ndstotalA," +
 			"	SUM(CASE WHEN s.nds = 7 THEN s.total ELSE 0 END) AS totalB," + 
-			"	SUM(CASE WHEN s.nds = 7 THEN s.ndstotal ELSE 0 END) AS ndstotalB," +
+			"	round(SUM(CASE WHEN s.nds = 7 THEN s.ndstotal ELSE 0 END), 2) AS ndstotalB," +
 			"	SUM(CASE WHEN s.nds = 0 THEN s.total ELSE 0 END) AS totalC," + 
-			"	SUM(CASE WHEN s.nds = 0 THEN s.ndstotal ELSE 0 END) AS ndstotalC," +
+			"	round(SUM(CASE WHEN s.nds = 0 THEN s.ndstotal ELSE 0 END), 2) AS ndstotalC," +
 			"	SUM(SUM(s.total)) OVER() AS sumtotal, " +  
-			"	SUM(SUM(s.ndstotal)) OVER() AS sumndstotal " +
+			"	round(SUM(SUM(s.ndstotal)) OVER(), 2) AS sumndstotal " +
 			"	FROM checkspec s" + 
 			"	INNER JOIN cashreg.check c ON c.id = s.id_check" +
 			"	WHERE c.canceled = 0 AND s.canceled = 0 /*AND cast(c.crtime as date) = current_date()*/" + 	//закоментировано для debug-а

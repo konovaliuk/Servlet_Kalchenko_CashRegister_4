@@ -1,6 +1,7 @@
 package daoimpl;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -43,8 +44,27 @@ public class UserTypeDAO implements IUserTypeDAO<UserType> {
 	}
 
 	@Override
+    public List<UserType> findAll() {
+        return findAll(null);
+    }
+	
+	@Override
     public List<UserType> findAll(String where) {
-        return null;
+		List<UserType> userTypes = new ArrayList<>();
+		try (Connection connection = DAOManager.getConnection();
+			Statement statement = connection.createStatement()) {
+			ResultSet rs = statement.executeQuery("SELECT * FROM user_type" + (where != null ? " WHERE " + where : ""));
+			while (rs.next()) {
+				UserType userType = new UserType();
+				userType.setId(rs.getLong("id"));
+				userType.setType(rs.getString("type"));
+				userType.setDescription(rs.getString("description"));
+				userTypes.add(userType);					
+			}				
+		} catch (SQLException e) {
+			logger.error(e);				
+		}
+		return userTypes;
     }
 	
 	@Override

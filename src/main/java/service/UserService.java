@@ -35,6 +35,9 @@ public class UserService {
 		
 		IUserDAO<User> userDAO = DAOFactory.getUserDAO();
 		IUserTypeDAO<UserType> userTypeDao = DAOFactory.getUserTypeDAO();
+		if (userDAO.findUserByLogin(login) != null) {
+			return null;
+		}
 		User user = new User();
 		user.setName(userName);
 		user.setLogin(login);

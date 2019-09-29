@@ -19,17 +19,21 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import command.*;
 import command.CommandFactory.Commands;
+import daoimpl.UserDAO;
 import entity.User;
 import service.UserService;
 
-/**
- * 
+/** 
  * @author SergeyK
  */
 
 @RunWith( PowerMockRunner.class )
 public class ServletTest extends Mockito {
 	
+    MainController servlet = new MainController();
+    HttpServletRequest request= mock(HttpServletRequest.class);;
+    HttpServletResponse response = mock(HttpServletResponse.class);
+    RequestDispatcher dispatcher = mock(RequestDispatcher.class);
 
 	/**
 	 * @throws java.lang.Exception
@@ -52,33 +56,41 @@ public class ServletTest extends Mockito {
     
     @PrepareForTest( UserService.class )
 	@Test
-	public void serviceTest() throws ServletException, IOException {
-        MainController servlet = new MainController();
-        HttpServletRequest request= mock(HttpServletRequest.class);;
-        HttpServletResponse response = mock(HttpServletResponse.class);
-        RequestDispatcher dispatcher = mock(RequestDispatcher.class);
-        
-        when(request.getServletPath()).thenReturn("/login");
+	public void loginTest() throws ServletException, IOException {        
+        when(request.getServletPath()).thenReturn("/");
         when(request.getRequestDispatcher("/WEB-INF/view/index.jsp")).thenReturn(dispatcher);
         servlet.doGet(request, response);
         when(request.getParameter("btnLogin")).thenReturn("Enter");
         when(request.getParameter("email")).thenReturn("a1@gmail.com");
         when(request.getParameter("password")).thenReturn("1");
         verify(dispatcher).forward(request, response);
+        verify(request, times(1)).getParameter("btnLogin");
         
         PowerMockito.mockStatic(UserService.class );
         when(UserService.findUser(any(String.class), any(String.class))).thenReturn(null);        
         servlet.doPost(request, response);
-        verify(request, times(1)).getParameter("btnLogin");
-        verify(request, atLeast(2)).getParameter("email");
-        
+        verify(request, atLeast(1)).getParameter("btnLogin");
+        verify(request, atLeast(1)).getParameter("email");
+        UserDAO userDao = mock(UserDAO.class);
+        when(userDao.findUserByLogin(any(String.class))).thenReturn(null);
+        servlet.doPost(request, response);
+	}    
+    
+    @PrepareForTest(UserService.class )
+    @Test
+    public void registrationTest() throws ServletException, IOException {        
         when(request.getServletPath()).thenReturn("/registration");
         when(request.getRequestDispatcher("/WEB-INF/view/registration.jsp")).thenReturn(dispatcher);
         servlet.doGet(request, response);
+        
+        PowerMockito.mockStatic(UserService.class );
         when(UserService.registration(any(String.class), any(String.class), any(String.class))).thenReturn(new User());
         when(request.getParameter("btnReg")).thenReturn("Registration");
         servlet.doPost(request, response);
-        
+    }    
+
+    @Test
+    public void pagesTest() throws ServletException, IOException {        
         when(request.getServletPath()).thenReturn("/check");
         when(request.getRequestDispatcher("/WEB-INF/view/check.jsp")).thenReturn(dispatcher);
         servlet.doGet(request, response);
@@ -86,5 +98,5 @@ public class ServletTest extends Mockito {
         when(request.getServletPath()).thenReturn("/cancel");
         when(request.getRequestDispatcher("/WEB-INF/view/cancel.jsp")).thenReturn(dispatcher);
         servlet.doGet(request, response);
-	}
+    }
 }

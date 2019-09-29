@@ -85,6 +85,13 @@ public class CheckSpecDAO implements ICheckSpecDAO<Checkspec> {
 		return -1;
 	}	
 	
+
+	@Override
+    public List<Checkspec> findAll() {
+		return findAll(null);
+	}
+	
+	@Override
     public List<Checkspec> findAll(String where) {
     	List<Checkspec> checkspecs = new ArrayList<>();
 		try (Connection connection = DAOManager.getConnection();

@@ -19,7 +19,9 @@
 <body>
 <jsp:include page="header.jsp" flush="true" />
 <h1><fmt:message key="title"/>. <fmt:message key="registration.title"/>!</h1>
-
+		<h4>
+		   <c:if test="${not empty existsLogin}"><fmt:message key="registration.exists"/>!</c:if>
+		</h4>
 		<FORM method="POST">
 			<table style="margin: auto">
 				<tr>

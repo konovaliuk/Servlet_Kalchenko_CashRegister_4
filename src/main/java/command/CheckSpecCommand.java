@@ -42,6 +42,6 @@ public class CheckSpecCommand implements Command {
 		} catch (NumberFormatException e) {
 			req.setAttribute("wronginput", true);
 		}
-		return "check";				
+		return null;				
 	}
 }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entity;
 
 import java.io.Serializable;
@@ -13,19 +8,15 @@ import java.io.Serializable;
  */
 public class User implements Serializable {
 
-    
-    private String name;
-
     private static final long serialVersionUID = 1L;
 
     private Long id;
-
     private Long idUserType;
-
     private String login;
-
     private String password;
-
+    private String name;
+    private UserType userType;
+    
     public User() {
     }
 
@@ -73,6 +64,14 @@ public class User implements Serializable {
         this.name = name;
     }
 
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 31;

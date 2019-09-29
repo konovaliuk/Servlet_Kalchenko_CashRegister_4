@@ -28,8 +28,6 @@
 		   </font>
 		</h3>
 		<c:if test="${empty sessionScope.user}">
-			<p>a1@gmail.com<p> <!-- для дебага -->
-			<p>a3@gmail.com<p> <!-- для дебага -->
 			<FORM method="POST">
 				<table style="margin: auto">
 					<tr>

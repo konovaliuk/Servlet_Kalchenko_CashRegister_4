@@ -27,6 +27,8 @@ public class CommandFactory {
 		switch(command) {
 			case LOGIN:
 				return new LoginCommand();
+			case LOGOUT:
+				return new LogoutCommand();
 			case REGISTRATION:
 				return new RegistrationCommand();
 			case GOODS:
@@ -43,6 +45,6 @@ public class CommandFactory {
 	}
 	
 	public enum Commands {
-		LOGIN, REGISTRATION, GOODS, CHECK, CANCEL, CHECKSPEC
+		LOGIN, REGISTRATION, GOODS, CHECK, CHECKSPEC, CANCEL, LOGOUT
 	}
 }

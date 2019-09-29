@@ -58,12 +58,17 @@ public class CheckDAO implements ICheckDAO<Check> {
 	}
 
 	@Override
+    public List<Check> findAll() {
+		return findAll(null);
+	}
+	
+	@Override
     public List<Check> findAll(String where) {
     	List<Check> checks = new ArrayList<>();
 		try (Connection connection = DAOManager.getConnection();
-			PreparedStatement statement = connection
-					.prepareStatement("SELECT * FROM cashreg.check" + (where != null ? " WHERE " + where : "") + " ORDER BY id")) {
-			ResultSet resultSet = statement.executeQuery();			
+			Statement statement = connection.createStatement()) {
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM cashreg.check" + (where != null ? " WHERE " + where : "") 
+					+ " ORDER BY id");			
 			while (resultSet.next()) {
 				Check check = new Check();
 				check.setId(resultSet.getLong("id"));

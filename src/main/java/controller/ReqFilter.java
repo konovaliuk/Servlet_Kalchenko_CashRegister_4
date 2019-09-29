@@ -26,7 +26,7 @@ public class ReqFilter implements Filter {
 		HttpSession session = ((HttpServletRequest)request).getSession();
 		String path = ((HttpServletRequest)request).getServletPath();
  		if ((session == null || session.getAttribute("user") == null) 
-				&& !path.startsWith("/log") && !path.equals("/registration")) {
+				&& !path.equals("/") && !path.equals("/login") && !path.equals("/logout") && !path.equals("/registration")) {
 			((HttpServletResponse)response).sendRedirect("login");
 			return;
 		}		

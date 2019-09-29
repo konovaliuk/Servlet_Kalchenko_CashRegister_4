@@ -2,7 +2,6 @@ package service;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collectors;
 import dao.*;
 import entity.*;
 import transaction.*;
@@ -67,7 +66,7 @@ public class CheckService {
 		//check.setCheckspecs(checkspecs);
 		TransactionHandler.execute(connection -> {
 			Long idCheck = checkDAO.insert(connection, check);
-			checkspecs.stream().peek(o -> o.setIdCheck(idCheck)).collect(Collectors.toList());
+			checkspecs.stream().forEach(o -> o.setIdCheck(idCheck));
 			checkspecDAO.insertAll(connection, checkspecs);
 		});
 	}

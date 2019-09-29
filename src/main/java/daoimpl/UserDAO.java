@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import dao.DAOManager;
 import dao.IUserDAO;
 import entity.User;
+import entity.UserType;
 
 public class UserDAO implements IUserDAO<User> {
 
@@ -47,11 +48,16 @@ public class UserDAO implements IUserDAO<User> {
 	}
 
 	@Override
+	public List<User> findAll() {
+		return findAll(null);
+	}
+	
+	@Override
     public List<User> findAll(String where) {
 		List<User> users = new ArrayList<>();
 		try (Connection connection = DAOManager.getConnection();
-			PreparedStatement statement = connection.prepareStatement("SELECT * FROM user" + (where != null ? " WHERE " + where : ""))) {
-			ResultSet rs = statement.executeQuery();
+			Statement statement = connection.createStatement()) {
+			ResultSet rs = statement.executeQuery("SELECT * FROM user" + (where != null ? " WHERE " + where : ""));
 			while (rs.next()) {
 				User user = new User();
 				user.setId(rs.getLong("id"));
@@ -82,23 +88,48 @@ public class UserDAO implements IUserDAO<User> {
 			}
 		}
 	}
-
+	
+	@Override
+	public User findUserByLogin(String login) {
+		try (Connection connection = DAOManager.getConnection();
+			PreparedStatement statement = connection.prepareStatement("SELECT * FROM user WHERE login = ?")) {
+			statement.setString(1, login);
+			ResultSet resultSet = statement.executeQuery();			
+			if (resultSet.first()) {
+				User user = new User();
+				user.setId(resultSet.getLong("id"));
+				user.setLogin(login);
+				user.setIdUserType(resultSet.getLong("id_user_type"));
+				user.setName(resultSet.getString("name"));
+				return user;
+			}
+		} catch (SQLException e) {
+			logger.error("Ошибка при поиске пользователя", e);
+		}
+		return null;
+	}
+	
 	@Override
 	public User findUser(String login, String password) {
 		try (Connection connection = DAOManager.getConnection();
 			PreparedStatement statement = connection
-					.prepareStatement("SELECT * FROM user WHERE login = ? AND password = ?")) {
+					.prepareStatement("SELECT u.*, t.id AS tid, t.type, t.description FROM user u "
+					+ "INNER JOIN user_type t ON t.id = u.id_user_type "
+					+ "WHERE u.login = ? AND u.password = ? ")) {
 			statement.setString(1, login);
 			statement.setString(2, password);
-
-			ResultSet resultSet = statement.executeQuery();
-			User user = new User();
+			ResultSet resultSet = statement.executeQuery();			
 			if (resultSet.first()) {
+				User user = new User();
+				UserType userType = new UserType();
 				user.setId(resultSet.getLong("id"));
 				user.setLogin(login);
 				user.setIdUserType(resultSet.getLong("id_user_type"));
-				//user.setPassword(password);
 				user.setName(resultSet.getString("name"));
+				userType.setId(resultSet.getLong("tid"));
+				userType.setType(resultSet.getString("type"));
+				userType.setDescription(resultSet.getString("description"));
+				user.setUserType(userType);
 				return user;
 			}
 		} catch (SQLException e) {

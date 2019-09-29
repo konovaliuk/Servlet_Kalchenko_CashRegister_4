@@ -35,13 +35,19 @@ public class GoodsService {
 		goods.setComments(comments);
 		IGoodsDAO<Goods> goodsDAO = DAOFactory.getGoodsDAO();
 		Goods existsGood = goodsDAO.findGoods(code);
-		if (existsGood == null) {
-			logger.info("Товар добавлен");
-			return goodsDAO.insert(goods);			
-		} else {
+		if (existsGood != null) {
 			logger.info("Товар с кодом " + code + " уже существует");
+			return -1l;
+		} else {
+			existsGood = goodsDAO.findGoods(name);		
+			if (existsGood != null) {
+				logger.info("Товар " + name + " уже существует");
+				return -2l;
+			} else {
+				logger.info("Товар добавлен");
+				return goodsDAO.insert(goods);			
+			}
 		}
-		return null;
 	}
 
 	/**

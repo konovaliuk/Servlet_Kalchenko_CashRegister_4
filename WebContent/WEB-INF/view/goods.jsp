@@ -25,8 +25,11 @@
 		   <c:if test="${not empty addedGood}">
 		      <fmt:message key="menu.goods"/> ${addedGood} <fmt:message key="check.success"/>!
 		   </c:if>
-		   <c:if test="${not empty code}">
-		      <fmt:message key="check.code"/> ${code} <fmt:message key="goods.exists"/>!
+		   <c:if test="${not empty existsCode}">
+		      <fmt:message key="check.code"/> ${existsCode} <fmt:message key="goods.exists"/>!
+		   </c:if>
+		   <c:if test="${not empty existsName}">
+		      <fmt:message key="check.goodname"/> ${existsName} <fmt:message key="goods.exists"/>!
 		   </c:if>
 		</h4>
 		<FORM method="POST">

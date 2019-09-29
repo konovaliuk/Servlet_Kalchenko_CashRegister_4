@@ -22,7 +22,13 @@ public interface IDAO<T> {
 	 * @param item удаляемая запись
 	 */
     public void delete(T item);
-    
+   
+	/**
+	 * Найти все записи из таблицы
+	 * @return список записей
+	 */
+	public List<T> findAll();
+	
 	/**
 	 * Найти все записи из таблицы
 	 * @param where строка запроса where для поиска
