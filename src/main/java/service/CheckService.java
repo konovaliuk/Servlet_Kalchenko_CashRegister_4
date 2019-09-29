@@ -17,11 +17,10 @@ public class CheckService {
 	 * @param xcode код товара
 	 * @param xname наименование товара
 	 * @param quant количество товара
-	 * @param price цена за единицу товара
 	 * @param nds ставка НДС
 	 * @return спецификация чека
 	 */
-	public static Checkspec addCheckSpec(String xcode, String xname, Double quant, Double price, String nds) throws NumberFormatException {
+	public static Checkspec addCheckSpec(String xcode, String xname, Double quant, String nds) throws NumberFormatException {
 		
 		Goods existsGoods = null;
 		Integer code = null;
@@ -38,7 +37,7 @@ public class CheckService {
 			spec.setXname(existsGoods.getName());
 			spec.setXcode(existsGoods.getCode());
 			spec.setQuant(quant);
-			spec.setPrice(price);						
+			spec.setPrice(existsGoods.getPrice());						
 			spec.setTotal(BigDecimal.valueOf(spec.getQuant()).multiply(BigDecimal.valueOf(spec.getPrice())).doubleValue());
 			spec.setNds(nds != null ? Integer.valueOf(nds) : 0);
 			spec.setNdstotal(BigDecimal.valueOf(spec.getTotal()).multiply(BigDecimal.valueOf(spec.getNds())).divide(new BigDecimal(100)).doubleValue());
@@ -58,6 +57,7 @@ public class CheckService {
 		
 		ICheckDAO<Check> checkDAO = DAOFactory.getCheckDAO();
 		ICheckSpecDAO<Checkspec> checkspecDAO = DAOFactory.getCheckSpecDAO();
+		IGoodsDAO<Goods> goodsDAO = DAOFactory.getGoodsDAO();
 		Check check = new Check();		
 		check.setCreator(user.getId());
 		
@@ -66,7 +66,14 @@ public class CheckService {
 		//check.setCheckspecs(checkspecs);
 		TransactionHandler.execute(connection -> {
 			Long idCheck = checkDAO.insert(connection, check);
-			checkspecs.stream().forEach(o -> o.setIdCheck(idCheck));
+			checkspecs.stream().forEach(o -> {
+				o.setIdCheck(idCheck);
+				Goods goods = goodsDAO.findById(o.getIdGood());
+				if (goods != null) {
+					goods.setQuant(goods.getQuant() - o.getQuant());
+					goodsDAO.update(connection, goods);
+				}
+				});
 			checkspecDAO.insertAll(connection, checkspecs);
 		});
 	}

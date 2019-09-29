@@ -12,8 +12,9 @@ public class Goods implements Serializable {
 	private Long id;
 	private int code;
 	private String name;	
-	private String measure;	
 	private double quant;
+	private double price;
+	private String measure;
 	private String comments;
 
 	public Goods() {
@@ -57,6 +58,14 @@ public class Goods implements Serializable {
 
 	public void setQuant(double quant) {
 		this.quant = quant;
+	}
+	
+	public void setPrice(double price) {
+		this.price = price;		
+	}
+	
+	public double getPrice() {
+		return this.price;
 	}
 	
 	public String getComments() {

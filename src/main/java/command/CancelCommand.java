@@ -27,7 +27,7 @@ public class CancelCommand implements Command {
 			Long checkid = Long.valueOf(req.getParameter("checkid"));
 			ICheckDAO<Check> checkDAO = DAOFactory.getCheckDAO();
 			ICheckSpecDAO<Checkspec> checkspecDAO = DAOFactory.getCheckSpecDAO();
-			Check check = checkDAO.findCheck(checkid);
+			Check check = checkDAO.findById(checkid);
 			List<Checkspec> checkspecs = checkspecDAO.findAll("id_check = " + checkid + "");
 			if (check != null) {
 				session.setAttribute("check", check);

@@ -119,7 +119,7 @@ public class CheckDAO implements ICheckDAO<Check> {
 	}
 
 	@Override
-	public Check findCheck(Long id) {
+	public Check findById(Long id) {
 		try (Connection connection = DAOManager.getConnection();
 			PreparedStatement statement = connection
 					.prepareStatement("SELECT * FROM cashreg.check WHERE id = ?")) {

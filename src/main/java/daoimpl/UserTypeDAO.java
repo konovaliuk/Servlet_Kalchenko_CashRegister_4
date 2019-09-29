@@ -69,6 +69,17 @@ public class UserTypeDAO implements IUserTypeDAO<UserType> {
 	
 	@Override
 	public void update(UserType usertype) {
+		if (usertype != null) {
+			try(Connection connection = DAOManager.getConnection();
+					PreparedStatement statement = connection.prepareStatement("UPDATE user_type SET type=?, description=? WHERE id=?")) {
+				statement.setString(1, usertype.getType());
+				statement.setString(2, usertype.getDescription());
+				statement.setLong(3, usertype.getId());
+				statement.executeUpdate();
+			} catch (SQLException e) {
+				logger.error(e);
+			}
+		}
 	}
 
 	@Override

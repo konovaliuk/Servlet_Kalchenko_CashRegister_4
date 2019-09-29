@@ -74,6 +74,19 @@ public class UserDAO implements IUserDAO<User> {
 	 
 	@Override
 	public void update(User user) {
+		if (user != null) {
+			try(Connection connection = DAOManager.getConnection();
+					PreparedStatement statement = connection.prepareStatement("UPDATE user SET login=?, password=?, name=?, id_user_type=? WHERE id=?")) {
+				statement.setString(1, user.getLogin());
+				statement.setString(2, user.getPassword());
+				statement.setString(3, user.getName());
+				statement.setLong(4, user.getIdUserType());
+				statement.setLong(5, user.getId());
+				statement.executeUpdate();
+			} catch (SQLException e) {
+				logger.error(e);
+			}
+		}
 	}
 
 	@Override

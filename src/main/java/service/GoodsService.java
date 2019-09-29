@@ -21,16 +21,18 @@ public class GoodsService {
 	 * @param code код товара
 	 * @param name наименование
 	 * @param quant количество товара
+	 * @param price цена товара
 	 * @param measure единица измерения
 	 * @param comments комментарии к товару
 	 * @return Id добавленно записи
 	 */
-	public static Long addGoods(int code, String name, double quant, String measure, String comments) {
+	public static Long addGoods(int code, String name, double quant, double price, String measure, String comments) {
 		
 		Goods goods = new Goods();
 		goods.setCode(code);
 		goods.setName(name);
 		goods.setQuant(quant);
+		goods.setPrice(price);
 		goods.setMeasure(measure);
 		goods.setComments(comments);
 		IGoodsDAO<Goods> goodsDAO = DAOFactory.getGoodsDAO();
@@ -72,15 +74,21 @@ public class GoodsService {
 	}
 
 	/**
-	 * Изменить товар
+	 * Изменить товар по коду товара
 	 * @param changecode код товара
 	 * @param changequant количество
+	 * @param changeprice цена
 	 */
-	public static void changeGoods(Integer changecode, Double changequant) {
+	public static void changeGoods(Integer changecode, Double changequant, Double changeprice) {
 		IGoodsDAO<Goods> goodsDAO = DAOFactory.getGoodsDAO();
 		Goods goods = goodsDAO.findGoods(changecode);
 		if (goods != null) {
-			goods.setQuant(changequant);
+			if (changequant != null) {
+				goods.setQuant(changequant);
+			}
+			if (changeprice != null) {
+				goods.setPrice(changeprice);
+			}
 			goodsDAO.update(goods);
 		}
 	}

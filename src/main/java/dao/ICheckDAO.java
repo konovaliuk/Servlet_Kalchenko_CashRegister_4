@@ -9,7 +9,7 @@ public interface ICheckDAO<Check> extends IDAO<Check> {
 	 * @param id записи
 	 * @return объект по найденной записи
 	 */
-	Check findCheck(Long id);
+	Check findById(Long id);
 	
 	/**
 	 * Добавить запись в таблицу чеки в транзакции

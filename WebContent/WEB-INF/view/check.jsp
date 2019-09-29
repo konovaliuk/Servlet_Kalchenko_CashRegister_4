@@ -53,10 +53,10 @@
 					<td style="text-align: left"><fmt:message key="check.nds"/>:</td>
 					<td><input name="nds" type="number" value="20"/></td>
 				</tr>
-				<tr>
+				<!-- <tr>
 					<td style="text-align: left"><fmt:message key="check.price"/>:</td>
 					<td><input name="price" type="number" min="0" step="0.01" required /></td>
-				</tr>
+				</tr> -->
 				<tr>
 					<td><input type="submit" class="button" name="btnAddCheckspec" value=<fmt:message key="check.addgood"/> />	</td>
 				</tr>

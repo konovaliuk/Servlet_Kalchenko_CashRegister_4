@@ -157,7 +157,7 @@ public class CheckSpecDAO implements ICheckSpecDAO<Checkspec> {
 	}
 
 	@Override
-	public Checkspec findCheckSpec(Long id) {
+	public Checkspec findById(Long id) {
 		try (Connection connection = DAOManager.getConnection();
 			PreparedStatement statement = connection
 					.prepareStatement("SELECT * FROM checkspec WHERE id = ?")) {

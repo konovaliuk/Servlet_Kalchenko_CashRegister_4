@@ -77,6 +77,16 @@ public class FiscalDAO implements IFiscalDAO<Fiscal> {
 	
 	@Override
 	public void update(Fiscal fiscal) {
+		if (fiscal != null) {
+			try(Connection connection = DAOManager.getConnection();
+					PreparedStatement statement = connection.prepareStatement("UPDATE cashreg.fiscal SET fiscal=? WHERE id=?")) {
+				statement.setDouble(1, fiscal.getTotal());
+				statement.setLong(2, fiscal.getId());
+				statement.executeUpdate();
+			} catch (SQLException e) {
+				logger.error(e);
+			}
+		}
 	}
 
 	@Override

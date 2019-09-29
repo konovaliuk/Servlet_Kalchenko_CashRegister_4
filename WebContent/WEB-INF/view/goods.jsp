@@ -47,6 +47,10 @@
 					<td><input name="quant" type="number" value="0" min="0" step="0.1" required /></td>
 				</tr>
 				<tr>
+					<td style="text-align: left"><fmt:message key="check.price"/>:</td>
+					<td><input name="price" type="number" value="0" min="0" step="0.01" required /></td>
+				</tr>
+				<tr>
 					<td style="text-align: left"><fmt:message key="goods.measure"/>:</td>
 					<td><select name="measure" size="1">
 						<option value="кг"><fmt:message key="goods.kilo"/></option>
@@ -73,8 +77,12 @@
 				</tr>
 				<tr>
 					<td style="text-align: left"><fmt:message key="check.quant"/>:</td>
-					<td><input name="changequant" type="number" value="0" min="0" step="0.1" required /></td>
-				</tr>	
+					<td><input name="changequant" type="number" min="0" step="0.1"/></td>
+				</tr>
+				<tr>
+					<td style="text-align: left"><fmt:message key="check.price"/>:</td>
+					<td><input name="changeprice" type="number" min="0" step="0.01"/></td>
+				</tr>
 				<tr>
 					<td><input type="submit" class="button" name="btnChangeGoods" value="<fmt:message key="goods.change"/>" /></td>
 				</tr>
@@ -82,20 +90,22 @@
 		</FORM>
 		<table class="table-border">
 			<tr>
-				<th><fmt:message key="check.num"/></th>
+				<!-- <th><fmt:message key="check.num"/></th> -->
 				<th><fmt:message key="check.goodname"/></th>
 				<th><fmt:message key="check.code"/></th>
 				<th><fmt:message key="check.quant"/></th>
+				<th><fmt:message key="check.price"/></th>
 				<th><fmt:message key="goods.measure"/></th>
 				<th><fmt:message key="goods.comments"/></th>
 			</tr>			
 			<c:forEach items="${requestScope.viewGoods}" var ="product" varStatus="counter">
 				<c:set var="count" value="${(currentPage - 1) * 10 + counter.count}" />
 				<tr>
-					<td>${count}</td>
+					<!-- <td>${count}</td> -->
 					<td>${product.name}</td>
 					<td>${product.code}</td>
 					<td>${product.quant}</td>
+					<td>${product.price}</td>
 					<td>${product.measure}</td>
 					<td>${product.comments}</td>
 				</tr>	

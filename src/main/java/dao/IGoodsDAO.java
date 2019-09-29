@@ -1,11 +1,18 @@
 package dao;
 
+import java.sql.Connection;
 import java.util.List;
-
 import entity.Goods;
 
 public interface IGoodsDAO<T> extends IDAO<T> {
 
+	/**
+	 * Найти запись по Id
+	 * @param id записи
+	 * @return объект по найденной записи
+	 */
+	Goods findById(Long id);
+	
 	/**
 	 * Найти товар по коду товара
 	 * @param code код товара
@@ -34,4 +41,10 @@ public interface IGoodsDAO<T> extends IDAO<T> {
 	 * @return количество записей
 	 */
 	public long count();
+	
+	/**
+	 * Обновить запись в таблице в транзакции
+	 * @param item обновляемая запись
+	 */
+	void update(Connection connection, T item);
 }

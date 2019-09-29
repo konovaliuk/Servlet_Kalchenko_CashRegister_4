@@ -12,7 +12,7 @@ public interface ICheckSpecDAO<CheckSpec> extends IDAO<CheckSpec> {
 	 * @param id записи
 	 * @return объект по найденной записи
 	 */
-	CheckSpec findCheckSpec(Long id);
+	CheckSpec findById(Long id);
 
 	/**
 	 * Добавить запись в таблицу чеки

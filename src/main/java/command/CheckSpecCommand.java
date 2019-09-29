@@ -27,9 +27,8 @@ public class CheckSpecCommand implements Command {
 		String xcode = req.getParameter("xcode");
 		String xname = req.getParameter("xname");
 		try {
-			Double quant = Double.valueOf(req.getParameter("quant"));
-			Double price = Double.valueOf(req.getParameter("price"));
-			Checkspec spec = CheckService.addCheckSpec(xcode, xname, quant, price, req.getParameter("nds"));
+			Double quant = Double.valueOf(req.getParameter("quant"));			
+			Checkspec spec = CheckService.addCheckSpec(xcode, xname, quant, req.getParameter("nds"));
 			if (spec != null) {
 				checkspecs.add(spec);
 			} else {

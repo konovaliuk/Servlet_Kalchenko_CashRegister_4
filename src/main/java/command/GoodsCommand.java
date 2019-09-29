@@ -20,8 +20,8 @@ public class GoodsCommand implements Command {
 		if (req.getParameter("btnSaveGood") != null) {
 			int code = Integer.valueOf(req.getParameter("code"));
 			String name = req.getParameter("name");
-			Long goodsId = GoodsService.addGoods(code, name, Double.valueOf(req.getParameter("quant")), 
-					req.getParameter("measure"), req.getParameter("comments"));
+			Long goodsId = GoodsService.addGoods(code, name, Double.valueOf(req.getParameter("quant")),
+					Double.valueOf(req.getParameter("price")), req.getParameter("measure"), req.getParameter("comments"));
 			if (goodsId > 0) {
 				req.setAttribute("addedGood", name);				
 			} else if (goodsId == -1) {
@@ -33,7 +33,16 @@ public class GoodsCommand implements Command {
 			}
 		}
 		if (req.getParameter("btnChangeGoods") != null) {
-			GoodsService.changeGoods(Integer.valueOf(req.getParameter("changecode")), Double.valueOf(req.getParameter("changequant")));			
+			try {
+				String changequant = req.getParameter("changequant");
+				Double newQuant = (changequant != null && !changequant.isEmpty() ? Double.valueOf(changequant) : null);
+				String changeprice = req.getParameter("changeprice");			
+				Double newPrice = (changeprice != null && !changeprice.isEmpty() ? Double.valueOf(changeprice) : null);
+				
+				GoodsService.changeGoods(Integer.valueOf(req.getParameter("changecode")), newQuant, newPrice);
+			} catch (NumberFormatException e) {
+				req.setAttribute("wronginput", true);
+			}
 		}
         Integer page =1;
         if (req.getParameter("page") != null) {
