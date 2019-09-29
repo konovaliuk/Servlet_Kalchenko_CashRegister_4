@@ -64,7 +64,22 @@
 				</tr>
 			</table>
 		</FORM>
-		
+		<FORM method="POST">
+			<h4><fmt:message key="goods.change"/>:</h4>
+			<table>
+				<tr>
+					<td style="text-align: left"><fmt:message key="check.code"/>:</td>
+					<td><input name="changecode" type="number" size="4" autofocus required /></td>
+				</tr>
+				<tr>
+					<td style="text-align: left"><fmt:message key="check.quant"/>:</td>
+					<td><input name="changequant" type="number" value="0" min="0" step="0.1" required /></td>
+				</tr>	
+				<tr>
+					<td><input type="submit" class="button" name="btnChangeGoods" value="<fmt:message key="goods.change"/>" /></td>
+				</tr>
+			</table>
+		</FORM>
 		<table class="table-border">
 			<tr>
 				<th><fmt:message key="check.num"/></th>

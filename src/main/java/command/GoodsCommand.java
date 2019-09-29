@@ -8,24 +8,15 @@ import entity.Goods;
 import service.GoodsService;
 
 /**
- * Класс для добавления товара в базу данных, 
+ * Класс для добавления товара в базу данных, изменения количества 
  * отображения всех товаров с pagination
  * @author SergeyK
  */
 public class GoodsCommand implements Command {
 
 	@Override
-	public String execute(HttpServletRequest req, HttpServletResponse resp) {
-		
-        Integer page =1;
-        if (req.getParameter("page") != null) {
-        	try {
-        		page = Integer.parseInt(req.getParameter("page"));
-			} catch (NumberFormatException e) {
-				req.setAttribute("wronginput", true);
-			}
-        }
-        //String url = "goods" + (page > 1 ? "?page=" + page : "");
+	public String execute(HttpServletRequest req, HttpServletResponse resp) {		
+
 		if (req.getParameter("btnSaveGood") != null) {
 			int code = Integer.valueOf(req.getParameter("code"));
 			String name = req.getParameter("name");
@@ -41,6 +32,17 @@ public class GoodsCommand implements Command {
 				req.setAttribute("existsName", name);
 			}
 		}
+		if (req.getParameter("btnChangeGoods") != null) {
+			GoodsService.changeGoods(Integer.valueOf(req.getParameter("changecode")), Double.valueOf(req.getParameter("changequant")));			
+		}
+        Integer page =1;
+        if (req.getParameter("page") != null) {
+        	try {
+        		page = Integer.parseInt(req.getParameter("page"));
+			} catch (NumberFormatException e) {
+				req.setAttribute("wronginput", true);
+			}
+        }
         int recordsPerPage = 10;
 		List<Goods> goods = GoodsService.view(page, recordsPerPage);
 		req.setAttribute("viewGoods", goods);

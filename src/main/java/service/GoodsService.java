@@ -70,4 +70,18 @@ public class GoodsService {
 		IGoodsDAO<Goods> goodsDAO = DAOFactory.getGoodsDAO();		
 		return goodsDAO.count();		
 	}
+
+	/**
+	 * Изменить товар
+	 * @param changecode код товара
+	 * @param changequant количество
+	 */
+	public static void changeGoods(Integer changecode, Double changequant) {
+		IGoodsDAO<Goods> goodsDAO = DAOFactory.getGoodsDAO();
+		Goods goods = goodsDAO.findGoods(changecode);
+		if (goods != null) {
+			goods.setQuant(changequant);
+			goodsDAO.update(goods);
+		}
+	}
 }

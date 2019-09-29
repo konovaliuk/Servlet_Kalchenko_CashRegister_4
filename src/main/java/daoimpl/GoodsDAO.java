@@ -103,6 +103,20 @@ public class GoodsDAO implements IGoodsDAO<Goods> {
     
 	@Override
 	public void update(Goods goods) {
+		if (goods != null) {
+			try(Connection connection = DAOManager.getConnection();
+					PreparedStatement statement = connection.prepareStatement("UPDATE goods SET code=?, name=?, quant=?, measure=?, comments=? WHERE id=?")) {
+				statement.setInt(1, goods.getCode());
+				statement.setString(2, goods.getName());
+				statement.setDouble(3, goods.getQuant());
+				statement.setString(4, goods.getMeasure());
+				statement.setString(5, goods.getComments());
+				statement.setLong(6, goods.getId());
+				statement.executeUpdate();
+			} catch (SQLException e) {
+				logger.error(e);
+			}
+		}
 	}
 
 	@Override
