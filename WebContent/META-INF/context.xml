@@ -20,7 +20,6 @@
          -->    
     <!-- url: The JDBC connection url for connecting to your MySQL database.
          -->
-
   <Resource name="jdbc/cashreg" auth="Container" type="javax.sql.DataSource"
                maxActive="100" maxIdle="30" maxWait="10000"
                username="root" password="root" driverClassName="com.mysql.cj.jdbc.Driver"
