@@ -112,7 +112,7 @@ public class GoodsDAO implements IGoodsDAO<Goods> {
 	public void update(Connection connection, Goods goods) {
 		if (goods != null) {
 			Connection conn = (connection == null ? DAOManager.getConnection() : connection);
-			try(PreparedStatement statement = connection.prepareStatement("UPDATE goods SET code=?, name=?, quant=?, price=?, measure=?, comments=? WHERE id=?")) {
+			try(PreparedStatement statement = conn.prepareStatement("UPDATE goods SET code=?, name=?, quant=?, price=?, measure=?, comments=? WHERE id=?")) {
 				statement.setInt(1, goods.getCode());
 				statement.setString(2, goods.getName());
 				statement.setDouble(3, goods.getQuant());

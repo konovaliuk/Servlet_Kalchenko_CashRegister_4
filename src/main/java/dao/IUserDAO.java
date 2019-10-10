@@ -14,7 +14,7 @@ public interface IUserDAO<T> extends IDAO<T> {
 
 	/**
 	 * Найти пользователя по логину
-	 * @param login v
+	 * @param login логин пользователя
 	 * @return user пользователь
 	 */
 	public User findUserByLogin(String login);
